@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: handong-ut-carpool
+  config:
+    import:
+      - classpath:/yaml/application-keys.yaml
