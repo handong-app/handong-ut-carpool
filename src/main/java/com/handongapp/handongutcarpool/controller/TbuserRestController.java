@@ -32,6 +32,6 @@ public class TbuserRestController {
     )
     @PostMapping("/create")
     public ResponseEntity<TbuserDto.CreateResDto> create(@Valid @RequestBody TbuserDto.CreateReqDto param){
-        return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.create(param));
+        return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.createOrUpdate(param));
     }
 }

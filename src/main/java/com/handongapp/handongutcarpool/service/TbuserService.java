@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TbuserService {
-    TbuserDto.CreateResDto create(TbuserDto.CreateReqDto param);
+    TbuserDto.CreateResDto createOrUpdate(TbuserDto.CreateReqDto param);
 
 }
