@@ -29,6 +29,6 @@ public class TbuserServiceImpl implements TbuserService {
                     return tbuserRepository.save(existingTbuser).toCreateResDto();
                 })
                 // 신규 유저일 때 실행
-                .orElseGet(tbuserRepository.save(param.toEntity())::toCreateResDto);
+                .orElseGet(() -> tbuserRepository.save(param.toEntity()).toCreateResDto());
     }
 }
