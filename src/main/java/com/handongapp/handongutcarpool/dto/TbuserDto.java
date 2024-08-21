@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 public class TbuserDto {
     @Builder
     @Schema
@@ -34,7 +36,7 @@ public class TbuserDto {
         private String phoneNumber;
 
         public Tbuser toEntity() {
-            return Tbuser.of(hakbun, name, phoneNumber, "idle", null);
+            return Tbuser.of(hakbun, name, phoneNumber, null);
         }
     }
 
@@ -48,4 +50,19 @@ public class TbuserDto {
         @Schema(description = "id", example="UUID")
         private String id;
     }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UpdatePenaltyReqDto{
+        @Schema(description = "id", example="UUID")
+        private String id;
+
+        @Schema(description = "penaltyUntil", example = "2024-08-23T14:17:30")
+        private LocalDateTime penaltyUntil;
+    }
+
 }

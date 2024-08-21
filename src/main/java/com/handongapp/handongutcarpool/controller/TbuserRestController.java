@@ -34,4 +34,18 @@ public class TbuserRestController {
     public ResponseEntity<TbuserDto.CreateResDto> create(@Valid @RequestBody TbuserDto.CreateReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.createOrUpdate(param));
     }
+
+    @Operation(summary = "사용자 패널티 부여",
+            description = "사용자 패널티 부여 컨트롤러 <br />"
+                    + "@param TbuserDto.UpdatePenaltyReq <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<TbuserDto.CreateResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때, 사용자가 없을 때 등 <br />"
+    )
+    @PostMapping("/update/penalty")
+    public ResponseEntity<TbuserDto.CreateResDto> updateStatus(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
+        return tbuserService.updatePenalty(param)
+                .map(res -> ResponseEntity.ok(res))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(TbuserDto.CreateResDto.builder().id("Not Exists").build()));
+    }
 }

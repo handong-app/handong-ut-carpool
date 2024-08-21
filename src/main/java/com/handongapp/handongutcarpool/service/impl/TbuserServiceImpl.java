@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TbuserServiceImpl implements TbuserService {
 
@@ -30,5 +32,14 @@ public class TbuserServiceImpl implements TbuserService {
                 })
                 // 신규 유저일 때 실행
                 .orElseGet(() -> tbuserRepository.save(param.toEntity()).toCreateResDto());
+    }
+
+    @Override
+    public Optional<TbuserDto.CreateResDto> updatePenalty(TbuserDto.UpdatePenaltyReqDto param){
+        return tbuserRepository.findById(param.getId())
+                .map(existingTbuser -> {
+                    existingTbuser.setPenaltyUntil(param.getPenaltyUntil());
+                    return tbuserRepository.save(existingTbuser).toCreateResDto();
+                });
     }
 }
