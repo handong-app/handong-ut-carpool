@@ -20,19 +20,17 @@ public class Tbuser extends AuditingFields{
     @Setter @Column(nullable = false, unique = true) private String hakbun;
     @Setter @Column(nullable = false, unique = false) private String name;
     @Setter @Column(nullable = false, unique = true) private String phoneNumber;
-    @Setter @Column(nullable = false, unique = false) private String status;
     @Setter @Column(nullable = true, unique = false) private LocalDateTime penaltyUntil;
 
     protected Tbuser() {}
-    public Tbuser(String hakbun, String name, String phoneNumber, String status, LocalDateTime penaltyUntil ) {
+    public Tbuser(String hakbun, String name, String phoneNumber,  LocalDateTime penaltyUntil ) {
         this.hakbun = hakbun;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.status = status;
         this.penaltyUntil = penaltyUntil;
     }
-    public static Tbuser of(String hakbun, String name, String phoneNumber, String status, LocalDateTime penaltyUntil) {
-        return new Tbuser(hakbun, name, phoneNumber, status, penaltyUntil);
+    public static Tbuser of(String hakbun, String name, String phoneNumber, LocalDateTime penaltyUntil) {
+        return new Tbuser(hakbun, name, phoneNumber, penaltyUntil);
     }
 
     public TbuserDto.CreateResDto toCreateResDto() {
