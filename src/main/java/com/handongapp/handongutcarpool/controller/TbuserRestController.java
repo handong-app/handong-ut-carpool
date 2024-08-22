@@ -46,6 +46,6 @@ public class TbuserRestController {
         return tbuserService.updatePenalty(param)
                 .map(res -> ResponseEntity.ok(res))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(TbuserDto.CreateResDto.builder().id("Not Exists").build()));
+                        .body(TbuserDto.CreateResDto.builder().id("User Not Exists").build()));
     }
 }

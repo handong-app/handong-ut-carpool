@@ -1,6 +1,5 @@
 package com.handongapp.handongutcarpool.service.impl;
 
-import com.handongapp.handongutcarpool.domain.Tbuser;
 import com.handongapp.handongutcarpool.dto.TbuserDto;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
 import com.handongapp.handongutcarpool.service.TbuserService;
