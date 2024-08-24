@@ -2,6 +2,7 @@ package com.handongapp.handongutcarpool.controller;
 
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
+import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
 import com.handongapp.handongutcarpool.service.TbgroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -48,15 +49,8 @@ public class TbgroupRestController {
     @PostMapping("/lock")
     public ResponseEntity<BasicDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
         return tbgroupService.lock(param)
-                .map(res -> {
-                            if (res.getId().equals("AccessDenied"))
-                                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                        .body(BasicDto.IdResDto.builder().id("Access Denied").build());
-                            else return ResponseEntity.ok(res);
-                        }
-                )
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(BasicDto.IdResDto.builder().id("Group Not Exists").build()));
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
 
     @Operation(summary = "그룹 상태 변경",
@@ -66,16 +60,9 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/update/status")
-    public ResponseEntity<BasicDto.IdResDto> UpdateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
+    public ResponseEntity<BasicDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
         return tbgroupService.updateStatus(param)
-                .map(res -> {
-                            if (res.getId().equals("AccessDenied"))
-                                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                        .body(BasicDto.IdResDto.builder().id("Access Denied").build());
-                            else return ResponseEntity.ok(res);
-                        }
-                )
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(BasicDto.IdResDto.builder().id("Group Not Exists").build()));
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
 }
