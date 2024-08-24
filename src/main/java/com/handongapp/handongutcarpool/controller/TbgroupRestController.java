@@ -55,7 +55,7 @@ public class TbgroupRestController {
                             else return ResponseEntity.ok(res);
                         }
                 )
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(BasicDto.IdResDto.builder().id("Group Not Exists").build()));
     }
 }
