@@ -56,9 +56,18 @@ public class TbgroupDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateResDto{
-        @Schema(description = "id", example="UUID")
-        private String id;
+    public static class LockReqDto{
+        @Schema(description = "TbgorupId", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbgroupId;
+
+        @Schema(description = "TbuserId", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbuserId;
     }
 
 
