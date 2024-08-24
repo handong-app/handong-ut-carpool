@@ -46,17 +46,6 @@ public class TbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CreateResDto{
-        @Schema(description = "id", example="UUID")
-        private String id;
-    }
-
-    @Builder
-    @Schema
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
     public static class UpdatePenaltyReqDto{
         @Schema(description = "id", example="UUID")
         private String id;

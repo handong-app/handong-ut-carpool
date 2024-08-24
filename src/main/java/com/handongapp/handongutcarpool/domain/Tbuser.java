@@ -1,6 +1,6 @@
 package com.handongapp.handongutcarpool.domain;
 
-import com.handongapp.handongutcarpool.dto.TbuserDto;
+import com.handongapp.handongutcarpool.dto.BasicDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +33,7 @@ public class Tbuser extends AuditingFields{
         return new Tbuser(hakbun, name, phoneNumber, penaltyUntil);
     }
 
-    public TbuserDto.CreateResDto toCreateResDto() {
-        return TbuserDto.CreateResDto.builder().id(this.getId()).build();
+    public BasicDto.IdResDto toIdResDto() {
+        return BasicDto.IdResDto.builder().id(this.getId()).build();
     }
 }

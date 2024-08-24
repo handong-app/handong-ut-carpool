@@ -1,5 +1,6 @@
 package com.handongapp.handongutcarpool.service.impl;
 
+import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbuserDto;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
 import com.handongapp.handongutcarpool.service.TbuserService;
@@ -21,24 +22,24 @@ public class TbuserServiceImpl implements TbuserService {
     }
 
     @Override
-    public TbuserDto.CreateResDto createOrUpdate(TbuserDto.CreateReqDto param){
+    public BasicDto.IdResDto createOrUpdate(TbuserDto.CreateReqDto param){
         return tbuserRepository.findByHakbun(param.getHakbun())
                 // 기존 유저가 존재시 실행
                 .map(existingTbuser -> {
                     existingTbuser.setName(param.getName());
                     existingTbuser.setPhoneNumber(param.getPhoneNumber());
-                    return tbuserRepository.save(existingTbuser).toCreateResDto();
+                    return tbuserRepository.save(existingTbuser).toIdResDto();
                 })
                 // 신규 유저일 때 실행
-                .orElseGet(() -> tbuserRepository.save(param.toEntity()).toCreateResDto());
+                .orElseGet(() -> tbuserRepository.save(param.toEntity()).toIdResDto());
     }
 
     @Override
-    public Optional<TbuserDto.CreateResDto> updatePenalty(TbuserDto.UpdatePenaltyReqDto param){
+    public Optional<BasicDto.IdResDto> updatePenalty(TbuserDto.UpdatePenaltyReqDto param){
         return tbuserRepository.findById(param.getId())
                 .map(existingTbuser -> {
                     existingTbuser.setPenaltyUntil(param.getPenaltyUntil());
-                    return tbuserRepository.save(existingTbuser).toCreateResDto();
+                    return tbuserRepository.save(existingTbuser).toIdResDto();
                 });
     }
 }
