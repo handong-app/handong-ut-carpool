@@ -32,11 +32,11 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public Optional<BasicDto.IdResDto> lock(TbgroupDto.LockReqDto param){
+    public Optional<BasicDto.IdResDto> toggleLock(TbgroupDto.LockReqDto param){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
                     if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
-                        existingTbgroup.setLocked(true);
+                        existingTbgroup.setLocked(!existingTbgroup.getLocked());
                         return tbgroupRepository.save(existingTbgroup).toIdResDto();
                     }
                     else throw new NoAuthorizationException("Access denied to the group");

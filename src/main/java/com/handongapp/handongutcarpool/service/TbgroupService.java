@@ -9,6 +9,6 @@ import java.util.Optional;
 @Service
 public interface TbgroupService {
     Optional<BasicDto.IdResDto> create(TbgroupDto.CreateReqDto param);
-    Optional<BasicDto.IdResDto> lock(TbgroupDto.LockReqDto param);
+    Optional<BasicDto.IdResDto> toggleLock(TbgroupDto.LockReqDto param);
     Optional<BasicDto.IdResDto> updateStatus(TbgroupDto.UpdateStatusReqDto param);
 }
