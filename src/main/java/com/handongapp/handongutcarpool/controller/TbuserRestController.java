@@ -2,6 +2,7 @@ package com.handongapp.handongutcarpool.controller;
 
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbuserDto;
+import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
 import com.handongapp.handongutcarpool.service.TbuserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,8 +46,7 @@ public class TbuserRestController {
     @PostMapping("/update/penalty")
     public ResponseEntity<BasicDto.IdResDto> updatePenalty(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
         return tbuserService.updatePenalty(param)
-                .map(res -> ResponseEntity.ok(res))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(BasicDto.IdResDto.builder().id("User Not Exists").build()));
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new NoMatchingDataException("User Not Exists"));
     }
 }
