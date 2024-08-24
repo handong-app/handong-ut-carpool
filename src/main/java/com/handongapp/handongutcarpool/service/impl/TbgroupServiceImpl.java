@@ -2,6 +2,7 @@ package com.handongapp.handongutcarpool.service.impl;
 
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
+import com.handongapp.handongutcarpool.exception.NoAuthorizationException;
 import com.handongapp.handongutcarpool.repository.TbgroupRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
 import com.handongapp.handongutcarpool.service.TbgroupService;
@@ -38,7 +39,7 @@ public class TbgroupServiceImpl implements TbgroupService {
                         existingTbgroup.setLocked(true);
                         return tbgroupRepository.save(existingTbgroup).toIdResDto();
                     }
-                    else return BasicDto.IdResDto.builder().id("AccessDenied").build();
+                    else throw new NoAuthorizationException("Access denied to the group");
                 });
     }
 
@@ -50,7 +51,7 @@ public class TbgroupServiceImpl implements TbgroupService {
                         existingTbgroup.setStatus(param.getStatus());
                         return tbgroupRepository.save(existingTbgroup).toIdResDto();
                     }
-                    else return BasicDto.IdResDto.builder().id("AccessDenied").build();
+                    else throw new NoAuthorizationException("Access denied to the group");
                 });
     }
 
