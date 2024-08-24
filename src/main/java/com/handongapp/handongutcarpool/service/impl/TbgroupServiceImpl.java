@@ -41,4 +41,17 @@ public class TbgroupServiceImpl implements TbgroupService {
                     else return BasicDto.IdResDto.builder().id("AccessDenied").build();
                 });
     }
+
+    @Override
+    public Optional<BasicDto.IdResDto> updateStatus(TbgroupDto.UpdateStatusReqDto param){
+        return tbgroupRepository.findById(param.getTbgroupId())
+                .map(existingTbgroup -> {
+                    if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
+                        existingTbgroup.setStatus(param.getStatus());
+                        return tbgroupRepository.save(existingTbgroup).toIdResDto();
+                    }
+                    else return BasicDto.IdResDto.builder().id("AccessDenied").build();
+                });
+    }
+
 }
