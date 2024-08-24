@@ -1,6 +1,6 @@
 package com.handongapp.handongutcarpool.domain;
 
-import com.handongapp.handongutcarpool.dto.TbgroupDto;
+import com.handongapp.handongutcarpool.dto.BasicDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
@@ -17,8 +17,7 @@ import lombok.Setter;
 })
 @Entity
 public class Tbgroup extends AuditingFields{
-    // 방장
-    @Setter @Column(nullable = false, unique = false) private String tbuserId;
+    @Setter @Column(nullable = false, unique = false) private String tbuserId; // 방장
     @Setter @Column(nullable = false, unique = false) private String fromLocation;
     @Setter @Column(nullable = false, unique = false) private String toLocation;
     @Setter @Column(nullable = false, unique = false) private String detail;
@@ -41,7 +40,7 @@ public class Tbgroup extends AuditingFields{
         return new Tbgroup(tbuserId, fromLocation, toLocation, detail, false, maxCount, "recruiting");
     }
 
-    public TbgroupDto.CreateResDto toCreateResDto() {
-        return TbgroupDto.CreateResDto.builder().id(this.getId()).build();
+    public BasicDto.IdResDto toIdResDto() {
+        return BasicDto.IdResDto.builder().id(this.getId()).build();
     }
 }
