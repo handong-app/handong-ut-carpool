@@ -70,5 +70,31 @@ public class TbgroupDto {
         private String tbuserId;
     }
 
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UpdateStatusReqDto{
+        @Schema(description = "TbgorupId", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbgroupId;
+
+        @Schema(description = "TbuserId", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbuserId;
+
+        @Schema(description = "status", example = "recruiting")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String status;
+    }
+
 
 }
