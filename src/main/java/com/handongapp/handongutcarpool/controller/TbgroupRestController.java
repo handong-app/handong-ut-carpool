@@ -1,5 +1,6 @@
 package com.handongapp.handongutcarpool.controller;
 
+import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
 import com.handongapp.handongutcarpool.service.TbgroupService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,14 +28,34 @@ public class TbgroupRestController {
     @Operation(summary = "그룹 생성",
             description = "그룹 생성 컨트롤러 <br />"
                     + "@param TbgroupDto.CreateReqDto <br />"
-                    + "@return HttpStatus.CREATED(201) ResponseEntity\\<TbgroupDto.CreateResDto\\> <br />"
+                    + "@return HttpStatus.CREATED(201) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/create")
-    public ResponseEntity<TbgroupDto.CreateResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
+    public ResponseEntity<BasicDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
         return tbgroupService.create(param)
                 .map(res -> ResponseEntity.ok(res))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(TbgroupDto.CreateResDto.builder().id("User Not Exists").build()));
+                        .body(BasicDto.IdResDto.builder().id("User Not Exists").build()));
+    }
+
+    @Operation(summary = "그룹 잠그기",
+            description = "그룹에 더이상 새로운 유저를 받지 않음 <br />"
+                    + "@param TbgroupDto.LockReqDto <br />"
+                    + "@return HttpStatus.CREATED(201) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때 등 <br />"
+    )
+    @PostMapping("/lock")
+    public ResponseEntity<BasicDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
+        return tbgroupService.lock(param)
+                .map(res -> {
+                            if (res.getId().equals("AccessDenied"))
+                                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                        .body(BasicDto.IdResDto.builder().id("Access Denied").build());
+                            else return ResponseEntity.ok(res);
+                        }
+                )
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(BasicDto.IdResDto.builder().id("Group Not Exists").build()));
     }
 }
