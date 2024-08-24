@@ -34,7 +34,7 @@ public class TbgroupRestController {
     @PostMapping("/create")
     public ResponseEntity<BasicDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
         return tbgroupService.create(param)
-                .map(res -> ResponseEntity.ok(res))
+                .map(res -> ResponseEntity.status(HttpStatus.CREATED).body(res))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(BasicDto.IdResDto.builder().id("User Not Exists").build()));
     }
@@ -42,7 +42,7 @@ public class TbgroupRestController {
     @Operation(summary = "그룹 잠그기",
             description = "그룹에 더이상 새로운 유저를 받지 않음 <br />"
                     + "@param TbgroupDto.LockReqDto <br />"
-                    + "@return HttpStatus.CREATED(201) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/lock")
