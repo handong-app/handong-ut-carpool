@@ -58,4 +58,24 @@ public class TbgroupRestController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(BasicDto.IdResDto.builder().id("Group Not Exists").build()));
     }
+
+    @Operation(summary = "그룹 상태 변경",
+            description = "그룹 상태 변경 ( recruiting / inprogress ) <br />"
+                    + "@param TbgroupDto.UpdateStatusReqDto <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때 등 <br />"
+    )
+    @PostMapping("/update/status")
+    public ResponseEntity<BasicDto.IdResDto> UpdateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
+        return tbgroupService.updateStatus(param)
+                .map(res -> {
+                            if (res.getId().equals("AccessDenied"))
+                                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                                        .body(BasicDto.IdResDto.builder().id("Access Denied").build());
+                            else return ResponseEntity.ok(res);
+                        }
+                )
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(BasicDto.IdResDto.builder().id("Group Not Exists").build()));
+    }
 }
