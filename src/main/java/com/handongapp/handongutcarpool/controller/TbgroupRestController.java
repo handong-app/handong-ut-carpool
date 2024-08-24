@@ -40,15 +40,15 @@ public class TbgroupRestController {
                         .body(BasicDto.IdResDto.builder().id("User Not Exists").build()));
     }
 
-    @Operation(summary = "그룹 잠그기",
-            description = "그룹에 더이상 새로운 유저를 받지 않음 <br />"
+    @Operation(summary = "그룹 잠그기 토글",
+            description = "그룹에 더이상 새로운 유저를 받지 않음 (토글) <br />"
                     + "@param TbgroupDto.LockReqDto <br />"
                     + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/lock")
+    @PostMapping("/toggle/lock")
     public ResponseEntity<BasicDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
-        return tbgroupService.lock(param)
+        return tbgroupService.toggleLock(param)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
