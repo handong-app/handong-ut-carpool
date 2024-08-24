@@ -1,5 +1,6 @@
 package com.handongapp.handongutcarpool.service.impl;
 
+import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
 import com.handongapp.handongutcarpool.repository.TbgroupRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
@@ -24,9 +25,20 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public Optional<TbgroupDto.CreateResDto> create(TbgroupDto.CreateReqDto param){
-
+    public Optional<BasicDto.IdResDto> create(TbgroupDto.CreateReqDto param){
         return tbuserRepository.findById(param.getTbuserId())
-                .map(existingTbuser -> tbgroupRepository.save(param.toEntity()).toCreateResDto());
+                .map(existingTbuser -> tbgroupRepository.save(param.toEntity()).toIdResDto());
+    }
+
+    @Override
+    public Optional<BasicDto.IdResDto> lock(TbgroupDto.LockReqDto param){
+        return tbgroupRepository.findById(param.getTbgroupId())
+                .map(existingTbgroup -> {
+                    if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
+                        existingTbgroup.setLocked(true);
+                        return tbgroupRepository.save(existingTbgroup).toIdResDto();
+                    }
+                    else return BasicDto.IdResDto.builder().id("AccessDenied").build();
+                });
     }
 }
