@@ -28,7 +28,7 @@ public class TbuserRestController {
     @Operation(summary = "사용자 생성",
             description = "사용자 생성 컨트롤러 <br />"
                     + "@param TbuserDto.CreateReqDto <br />"
-                    + "@return HttpStatus.CREATED(201) ResponseEntity\\<TbuserDto.CreateResDto\\> <br />"
+                    + "@return HttpStatus.CREATED(201) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/create")
@@ -39,11 +39,11 @@ public class TbuserRestController {
     @Operation(summary = "사용자 패널티 부여",
             description = "사용자 패널티 부여 컨트롤러 <br />"
                     + "@param TbuserDto.UpdatePenaltyReq <br />"
-                    + "@return HttpStatus.OK(200) ResponseEntity\\<TbuserDto.CreateResDto\\> <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때, 사용자가 없을 때 등 <br />"
     )
     @PostMapping("/update/penalty")
-    public ResponseEntity<BasicDto.IdResDto> updateStatus(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
+    public ResponseEntity<BasicDto.IdResDto> updatePenalty(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
         return tbuserService.updatePenalty(param)
                 .map(res -> ResponseEntity.ok(res))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
