@@ -3,14 +3,13 @@ package com.handongapp.handongutcarpool.service.impl;
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
 import com.handongapp.handongutcarpool.exception.NoAuthorizationException;
+import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
 import com.handongapp.handongutcarpool.repository.TbgroupRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
 import com.handongapp.handongutcarpool.service.TbgroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class TbgroupServiceImpl implements TbgroupService {
@@ -26,13 +25,14 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public Optional<BasicDto.IdResDto> create(TbgroupDto.CreateReqDto param){
+    public BasicDto.IdResDto create(TbgroupDto.CreateReqDto param){
         return tbuserRepository.findById(param.getTbuserId())
-                .map(existingTbuser -> tbgroupRepository.save(param.toEntity()).toIdResDto());
+                .map(existingTbuser -> tbgroupRepository.save(param.toEntity()).toIdResDto())
+                .orElseThrow(() -> new NoMatchingDataException("User Not Exists"));
     }
 
     @Override
-    public Optional<BasicDto.IdResDto> toggleLock(TbgroupDto.LockReqDto param){
+    public BasicDto.IdResDto toggleLock(TbgroupDto.LockReqDto param){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
                     if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
@@ -40,11 +40,12 @@ public class TbgroupServiceImpl implements TbgroupService {
                         return tbgroupRepository.save(existingTbgroup).toIdResDto();
                     }
                     else throw new NoAuthorizationException("Access denied to the group");
-                });
+                })
+                .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
 
     @Override
-    public Optional<BasicDto.IdResDto> updateStatus(TbgroupDto.UpdateStatusReqDto param){
+    public BasicDto.IdResDto updateStatus(TbgroupDto.UpdateStatusReqDto param){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
                     if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
@@ -52,7 +53,8 @@ public class TbgroupServiceImpl implements TbgroupService {
                         return tbgroupRepository.save(existingTbgroup).toIdResDto();
                     }
                     else throw new NoAuthorizationException("Access denied to the group");
-                });
+                })
+                .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
 
 }

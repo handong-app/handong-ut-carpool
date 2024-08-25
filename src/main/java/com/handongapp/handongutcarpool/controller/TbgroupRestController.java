@@ -2,7 +2,6 @@ package com.handongapp.handongutcarpool.controller;
 
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
-import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
 import com.handongapp.handongutcarpool.service.TbgroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,10 +33,7 @@ public class TbgroupRestController {
     )
     @PostMapping("/create")
     public ResponseEntity<BasicDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
-        return tbgroupService.create(param)
-                .map(res -> ResponseEntity.status(HttpStatus.CREATED).body(res))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(BasicDto.IdResDto.builder().id("User Not Exists").build()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupService.create(param));
     }
 
     @Operation(summary = "그룹 잠그기 토글",
@@ -48,9 +44,7 @@ public class TbgroupRestController {
     )
     @PostMapping("/toggle/lock")
     public ResponseEntity<BasicDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
-        return tbgroupService.toggleLock(param)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new NoMatchingDataException("Group not found"));
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.toggleLock(param));
     }
 
     @Operation(summary = "그룹 상태 변경",
@@ -61,8 +55,6 @@ public class TbgroupRestController {
     )
     @PostMapping("/update/status")
     public ResponseEntity<BasicDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
-        return tbgroupService.updateStatus(param)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new NoMatchingDataException("Group not found"));
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.updateStatus(param));
     }
 }
