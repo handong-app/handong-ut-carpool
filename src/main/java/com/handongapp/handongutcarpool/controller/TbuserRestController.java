@@ -45,8 +45,6 @@ public class TbuserRestController {
     )
     @PostMapping("/update/penalty")
     public ResponseEntity<BasicDto.IdResDto> updatePenalty(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
-        return tbuserService.updatePenalty(param)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new NoMatchingDataException("User Not Exists"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.updatePenalty(param));
     }
 }

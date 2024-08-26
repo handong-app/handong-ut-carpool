@@ -2,6 +2,7 @@ package com.handongapp.handongutcarpool.service.impl;
 
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbuserDto;
+import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
 import com.handongapp.handongutcarpool.service.TbuserService;
 import org.slf4j.Logger;
@@ -35,11 +36,12 @@ public class TbuserServiceImpl implements TbuserService {
     }
 
     @Override
-    public Optional<BasicDto.IdResDto> updatePenalty(TbuserDto.UpdatePenaltyReqDto param){
+    public BasicDto.IdResDto updatePenalty(TbuserDto.UpdatePenaltyReqDto param){
         return tbuserRepository.findById(param.getId())
                 .map(existingTbuser -> {
                     existingTbuser.setPenaltyUntil(param.getPenaltyUntil());
                     return tbuserRepository.save(existingTbuser).toIdResDto();
-                });
+                })
+                .orElseThrow(() -> new NoMatchingDataException("User Not Exists"));
     }
 }

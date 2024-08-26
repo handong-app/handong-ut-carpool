@@ -9,5 +9,5 @@ import java.util.Optional;
 @Service
 public interface TbuserService {
     BasicDto.IdResDto createOrUpdate(TbuserDto.CreateReqDto param);
-    Optional<BasicDto.IdResDto> updatePenalty(TbuserDto.UpdatePenaltyReqDto param);
+    BasicDto.IdResDto updatePenalty(TbuserDto.UpdatePenaltyReqDto param);
 }
