@@ -37,6 +37,9 @@ dependencies {
     //db
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    //mybatis 사용
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
