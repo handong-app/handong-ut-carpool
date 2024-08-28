@@ -21,4 +21,11 @@ public class GroupUserExceptionHandler {
                 .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
     }
 
+    @ExceptionHandler(GroupFullException.class)
+    public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleGroupFullException(GroupFullException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
+    }
+
+
 }
