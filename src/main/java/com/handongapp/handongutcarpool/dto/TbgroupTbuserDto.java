@@ -87,6 +87,35 @@ public class TbgroupTbuserDto {
 
     }
 
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserCountResDto {
+        @Schema(description = "tbuser_count", example = "1")
+        @NotNull
+        @NotEmpty
+        private Integer tbuserCount;
+    }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IsFullServDto {
+        @Schema(description = "is_full", example = "true")
+        @NotNull
+        @NotEmpty
+        private Boolean isFull;
+    }
+
+
+
     @Builder
     @Schema
     @Getter
