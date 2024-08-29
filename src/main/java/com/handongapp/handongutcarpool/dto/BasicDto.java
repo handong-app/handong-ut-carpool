@@ -10,6 +10,17 @@ public class BasicDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class IdReqDto{
+        @Schema(description = "id", example="UUID")
+        private String id;
+    }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class IdResDto{
         @Schema(description = "id", example="UUID")
         private String id;
