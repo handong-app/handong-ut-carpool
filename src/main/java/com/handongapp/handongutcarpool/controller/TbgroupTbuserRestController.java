@@ -1,6 +1,7 @@
 package com.handongapp.handongutcarpool.controller;
 
 
+import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import com.handongapp.handongutcarpool.service.TbgroupTbuserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,5 +36,16 @@ public class TbgroupTbuserRestController {
     @PostMapping("/enter")
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> enter(@Valid @RequestBody TbgroupTbuserDto.EnterGroupReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.enter(param));
+    }
+
+    @Operation(summary = "그룹 유저 카운트",
+            description = "그룹 유저 카운트 컨트롤러 <br />"
+                    + "@param BasicDto.IdReqDto <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<TbgroupTbuserDto.UserCountResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때 등 <br />"
+    )
+    @PostMapping("/count")
+    public ResponseEntity<TbgroupTbuserDto.UserCountResDto> userCount(@Valid @RequestBody BasicDto.IdReqDto param){
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.userCount(param));
     }
 }
