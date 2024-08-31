@@ -12,25 +12,25 @@ public class GroupUserExceptionHandler {
     @ExceptionHandler(UserAlreadyInGroupException.class)
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleUserAlreadyInGroupException(UserAlreadyInGroupException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
+                .body(TbgroupTbuserDto.EnterGroupResDto.builder().message(ex.getMessage()).build());
     }
 
     @ExceptionHandler(NoMatchingDataException.class)
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleNoMatchingDataException(NoMatchingDataException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
+                .body(TbgroupTbuserDto.EnterGroupResDto.builder().message(ex.getMessage()).build());
     }
 
     @ExceptionHandler(GroupFullException.class)
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleGroupFullException(GroupFullException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
+                .body(TbgroupTbuserDto.EnterGroupResDto.builder().message(ex.getMessage()).build());
     }
 
     @ExceptionHandler(GroupLockedException.class)
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleGroupLockedException(GroupLockedException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
+                .body(TbgroupTbuserDto.EnterGroupResDto.builder().message(ex.getMessage()).build());
     }
 
     @ExceptionHandler(UserAlreadyLeavedException.class)

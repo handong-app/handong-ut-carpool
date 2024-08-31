@@ -33,6 +33,6 @@ public class TbgroupTbuser extends AuditingFields{
     }
 
     public TbgroupTbuserDto.EnterGroupResDto toEnterGroupResDto() {
-        return TbgroupTbuserDto.EnterGroupResDto.builder().tbgroupId(this.tbgroupId).tbuserId(this.tbuserId).role(this.role).build();
+        return TbgroupTbuserDto.EnterGroupResDto.builder().tbgroupId(this.tbgroupId).tbuserId(this.tbuserId).role(this.role).message("success").build();
     }
 }
