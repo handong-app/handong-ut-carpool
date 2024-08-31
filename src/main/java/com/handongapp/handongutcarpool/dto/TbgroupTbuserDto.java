@@ -64,6 +64,12 @@ public class TbgroupTbuserDto {
         @NotEmpty
         @Size(max = 50)
         private String role;
+
+        @Schema(description = "message", example = "success")
+        @NotNull
+        @NotEmpty
+        @Size(max = 100)
+        private String message;
     }
 
     @Builder
@@ -135,7 +141,7 @@ public class TbgroupTbuserDto {
         @NotNull
         @NotEmpty
         @Size(max = 50)
-        private String tbqroupId;
+        private String tbgroupId;
 
         @Schema(description = "tbuser_id", example = "UUID")
         @NotNull
