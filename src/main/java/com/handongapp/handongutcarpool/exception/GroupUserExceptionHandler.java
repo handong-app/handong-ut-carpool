@@ -27,5 +27,11 @@ public class GroupUserExceptionHandler {
                 .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
     }
 
+    @ExceptionHandler(GroupLockedException.class)
+    public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleGroupLockedException(GroupLockedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
+    }
+
 
 }
