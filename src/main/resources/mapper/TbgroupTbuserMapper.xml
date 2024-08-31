@@ -4,7 +4,7 @@
     <select id="userCount" parameterType="hashMap" resultType="com.handongapp.handongutcarpool.dto.TbgroupTbuserDto$UserCountResDto">
         SELECT COUNT(tbgroup_tbuser.tbuser_id) AS tbuserCount
         FROM tbgroup_tbuser
-        WHERE tbgroup_tbuser.tbgroup_id = #{id}
+        WHERE tbgroup_tbuser.tbgroup_id = #{id} AND tbgroup_tbuser.deleted = "N"
     </select>
 
 
