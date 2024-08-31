@@ -1,9 +1,11 @@
 package com.handongapp.handongutcarpool.service.impl;
 
 
+import com.handongapp.handongutcarpool.domain.Tbgroup;
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import com.handongapp.handongutcarpool.exception.GroupFullException;
+import com.handongapp.handongutcarpool.exception.GroupLockedException;
 import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
 import com.handongapp.handongutcarpool.exception.UserAlreadyInGroupException;
 import com.handongapp.handongutcarpool.mapper.TbgroupTbuserMapper;
@@ -45,6 +47,9 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
                     if (Boolean.TRUE.equals(isGroupFull(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsFull())){
                         throw new GroupFullException("Group Full");
                     }
+                    if (Boolean.TRUE.equals(isGroupLock(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsLock())){
+                        throw new GroupLockedException("Group Locked");
+                    }
                     else {
                         return tbuserTbgroupRepository.save(param.toEntity()).toEnterGroupResDto();
                     }
@@ -60,6 +65,10 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
         return TbgroupTbuserDto.IsFullServDto.builder()
                 .isFull(tbgroupTbuserMapper.userCount(param).getTbuserCount() >= tbgroupRepository.findById(param.getId()).map(group -> group.getMaxCount()).orElseThrow(() -> new NoMatchingDataException("Group not found")))
                 .build();
+    }
+
+    public TbgroupTbuserDto.IsLockServDto isGroupLock(BasicDto.IdReqDto param){
+        return TbgroupTbuserDto.IsLockServDto.builder().isLock(tbgroupRepository.findById(param.getId()).map(Tbgroup::getLocked).orElseThrow(() -> new NoMatchingDataException("Group not found"))).build();
     }
 
     public TbgroupTbuserDto.UserCountResDto userCount(BasicDto.IdReqDto param){
