@@ -29,14 +29,8 @@ public class TbgroupTbuserDto {
         @Size(max = 50)
         private String tbuserId;
 
-        @Schema(description = "role", example = "group_member")
-        @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String role;
-
         public TbgroupTbuser toEntity() {
-            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, this.role);
+            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_member");
         }
     }
 
