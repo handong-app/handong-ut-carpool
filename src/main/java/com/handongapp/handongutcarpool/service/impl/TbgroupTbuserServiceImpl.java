@@ -4,10 +4,7 @@ package com.handongapp.handongutcarpool.service.impl;
 import com.handongapp.handongutcarpool.domain.Tbgroup;
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
-import com.handongapp.handongutcarpool.exception.GroupFullException;
-import com.handongapp.handongutcarpool.exception.GroupLockedException;
-import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
-import com.handongapp.handongutcarpool.exception.UserAlreadyInGroupException;
+import com.handongapp.handongutcarpool.exception.*;
 import com.handongapp.handongutcarpool.mapper.TbgroupTbuserMapper;
 import com.handongapp.handongutcarpool.repository.TbgroupRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
@@ -43,6 +40,21 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
                 })
                 .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
+
+    @Override
+    public TbgroupTbuserDto.LeaveGroupResDto leave(TbgroupTbuserDto.LeaveGroupReqDto param){
+        tbuserTbgroupRepository.save(
+                tbuserTbgroupRepository.findByTbgroupIdAndTbuserId(param.getTbgroupId(), param.getTbuserId())
+                        .map(tbuserTbgroup -> {
+                        if(tbuserTbgroup.getDeleted().equals("Y")) throw new UserAlreadyLeavedException("User is already leaved");
+                        tbuserTbgroup.setDeleted("Y");
+                        return tbuserTbgroup;
+                    })
+                    .orElseThrow(() -> new NoMatchingDataException("Group or User not found"))
+        );
+        return TbgroupTbuserDto.LeaveGroupResDto.builder().tbgroupId(param.getTbgroupId()).tbuserId(param.getTbuserId()).message("success").build();
+    }
+
 
     private void isValid(TbgroupTbuserDto.EnterGroupReqDto param){
         if (!tbuserRepository.existsById(param.getTbuserId())) {

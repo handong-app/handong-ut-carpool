@@ -38,6 +38,17 @@ public class TbgroupTbuserRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.enter(param));
     }
 
+    @Operation(summary = "그룹 유저 퇴장",
+            description = "그룹 유저 퇴장 컨트롤러 <br />"
+                    + "@param TbgroupTbuserDto.LeaveGroupReqDto <br />"
+                    + "@return HttpStatus.CREATED(201) ResponseEntity\\<TbgroupTbuserDto.LeaveGroupResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때 등 <br />"
+    )
+    @PostMapping("/leave")
+    public ResponseEntity<TbgroupTbuserDto.LeaveGroupResDto> leave(@Valid @RequestBody TbgroupTbuserDto.LeaveGroupReqDto param){
+        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.leave(param));
+    }
+
     @Operation(summary = "그룹 유저 카운트",
             description = "그룹 유저 카운트 컨트롤러 <br />"
                     + "@param BasicDto.IdReqDto <br />"
