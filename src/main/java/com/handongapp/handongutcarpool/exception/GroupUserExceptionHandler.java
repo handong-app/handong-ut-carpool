@@ -1,13 +1,15 @@
 package com.handongapp.handongutcarpool.exception;
 
+import com.handongapp.handongutcarpool.controller.TbgroupRestController;
 import com.handongapp.handongutcarpool.controller.TbgroupTbuserRestController;
+import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(assignableTypes = {TbgroupTbuserRestController.class})
+@RestControllerAdvice(assignableTypes = {TbgroupRestController.class, TbgroupTbuserRestController.class})
 public class GroupUserExceptionHandler {
     @ExceptionHandler(UserAlreadyInGroupException.class)
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleUserAlreadyInGroupException(UserAlreadyInGroupException ex) {
@@ -39,5 +41,9 @@ public class GroupUserExceptionHandler {
                 .body(TbgroupTbuserDto.LeaveGroupResDto.builder().message(ex.getMessage()).build());
     }
 
-
+    @ExceptionHandler(GroupAlreadyCreatedException.class)
+    public ResponseEntity<BasicDto.IdResDto> handleGroupAlreadyCreatedException(GroupAlreadyCreatedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(BasicDto.IdResDto.builder().id(ex.getMessage()).build());
+    }
 }
