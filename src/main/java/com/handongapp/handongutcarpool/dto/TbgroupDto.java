@@ -1,6 +1,7 @@
 package com.handongapp.handongutcarpool.dto;
 
 import com.handongapp.handongutcarpool.domain.Tbgroup;
+import com.handongapp.handongutcarpool.domain.TbgroupTbuser;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -47,6 +48,29 @@ public class TbgroupDto {
 
         public Tbgroup toEntity() {
             return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxCount);
+        }
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class EnterGroupReqDto{
+        @Schema(description = "group leader", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbuserId;
+
+        @Schema(description = "TbgorupId", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbgroupId;
+
+        public TbgroupTbuser toEntity() {
+            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_admin");
         }
     }
 
