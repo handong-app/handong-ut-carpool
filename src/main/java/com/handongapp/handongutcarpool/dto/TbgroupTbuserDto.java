@@ -114,6 +114,15 @@ public class TbgroupTbuserDto {
         private Boolean isFull;
     }
 
+    @Builder
+    @Getter
+    public static class IsLockServDto {
+        @Schema(description = "is_lock", example = "true")
+        @NotNull
+        @NotEmpty
+        private Boolean isLock;
+    }
+
 
 
     @Builder
