@@ -33,5 +33,11 @@ public class GroupUserExceptionHandler {
                 .body(TbgroupTbuserDto.EnterGroupResDto.builder().role(ex.getMessage()).build());
     }
 
+    @ExceptionHandler(UserAlreadyLeavedException.class)
+    public ResponseEntity<TbgroupTbuserDto.LeaveGroupResDto> handleUserAlreadyLeavedException(UserAlreadyLeavedException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(TbgroupTbuserDto.LeaveGroupResDto.builder().message(ex.getMessage()).build());
+    }
+
 
 }
