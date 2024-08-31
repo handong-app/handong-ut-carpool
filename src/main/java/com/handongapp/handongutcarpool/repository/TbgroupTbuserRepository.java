@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface TbuserTbgroupRepository extends JpaRepository<TbgroupTbuser, String> {
-    Boolean existsByTbgroupIdAndTbuserId(String tbgroupId, String tbuserId);
+public interface TbgroupTbuserRepository extends JpaRepository<TbgroupTbuser, String> {
     Optional<TbgroupTbuser> findByTbgroupIdAndTbuserId(String tbgroupId, String tbuserId);
 }
