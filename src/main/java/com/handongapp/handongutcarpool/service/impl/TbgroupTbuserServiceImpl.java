@@ -38,23 +38,25 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
     public TbgroupTbuserDto.EnterGroupResDto enter(TbgroupTbuserDto.EnterGroupReqDto param){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
-                    if (!tbuserRepository.existsById(param.getTbuserId())) {
-                        throw new NoMatchingDataException("User not found");
-                    }
-                    if (Boolean.TRUE.equals(isUserInGroup(TbgroupTbuserDto.IsUserInGroupServDto.builder().tbuserId(param.getTbuserId()).tbgroupId(param.getTbgroupId()).build()))) {
-                        throw new UserAlreadyInGroupException("User Already Exists");
-                    }
-                    if (Boolean.TRUE.equals(isGroupFull(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsFull())){
-                        throw new GroupFullException("Group Full");
-                    }
-                    if (Boolean.TRUE.equals(isGroupLock(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsLock())){
-                        throw new GroupLockedException("Group Locked");
-                    }
-                    else {
-                        return tbuserTbgroupRepository.save(param.toEntity()).toEnterGroupResDto();
-                    }
+                    isValid(param);
+                    return tbuserTbgroupRepository.save(param.toEntity()).toEnterGroupResDto();
                 })
                 .orElseThrow(() -> new NoMatchingDataException("Group not found"));
+    }
+
+    private void isValid(TbgroupTbuserDto.EnterGroupReqDto param){
+        if (!tbuserRepository.existsById(param.getTbuserId())) {
+            throw new NoMatchingDataException("User not found");
+        }
+        if (Boolean.TRUE.equals(isUserInGroup(TbgroupTbuserDto.IsUserInGroupServDto.builder().tbuserId(param.getTbuserId()).tbgroupId(param.getTbgroupId()).build()))) {
+            throw new UserAlreadyInGroupException("User Already Exists");
+        }
+        if (Boolean.TRUE.equals(isGroupFull(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsFull())){
+            throw new GroupFullException("Group Full");
+        }
+        if (Boolean.TRUE.equals(isGroupLock(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsLock())){
+            throw new GroupLockedException("Group Locked");
+        }
     }
 
     public Boolean isUserInGroup(TbgroupTbuserDto.IsUserInGroupServDto param){
