@@ -124,7 +124,6 @@ public class TbgroupTbuserDto {
     }
 
 
-
     @Builder
     @Schema
     @Getter
@@ -144,5 +143,31 @@ public class TbgroupTbuserDto {
         @Size(max = 50)
         private String tbuserId;
 
+    }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LeaveGroupResDto {
+        @Schema(description = "tbgroup_id", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbgroupId;
+
+        @Schema(description = "tbuser_id", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbuserId;
+
+        @Schema(description = "message", example = "success")
+        @NotNull
+        @NotEmpty
+        @Size(max = 100)
+        private String message;
     }
 }
