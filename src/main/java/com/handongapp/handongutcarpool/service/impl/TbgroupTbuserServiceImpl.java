@@ -63,7 +63,7 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
 
     public TbgroupTbuserDto.IsFullServDto isGroupFull(BasicDto.IdReqDto param){
         return TbgroupTbuserDto.IsFullServDto.builder()
-                .isFull(tbgroupTbuserMapper.userCount(param).getTbuserCount() >= tbgroupRepository.findById(param.getId()).map(group -> group.getMaxCount()).orElseThrow(() -> new NoMatchingDataException("Group not found")))
+                .isFull(tbgroupTbuserMapper.userCount(param).getTbuserCount() >= tbgroupRepository.findById(param.getId()).map(Tbgroup::getMaxCount).orElseThrow(() -> new NoMatchingDataException("Group not found")))
                 .build();
     }
 
