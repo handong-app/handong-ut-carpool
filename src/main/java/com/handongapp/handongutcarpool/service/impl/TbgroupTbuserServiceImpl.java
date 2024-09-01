@@ -6,6 +6,7 @@ import com.handongapp.handongutcarpool.domain.TbgroupTbuser;
 import com.handongapp.handongutcarpool.dto.BasicDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import com.handongapp.handongutcarpool.exception.*;
+import com.handongapp.handongutcarpool.mapper.TbgroupMapper;
 import com.handongapp.handongutcarpool.mapper.TbgroupTbuserMapper;
 import com.handongapp.handongutcarpool.repository.TbgroupRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
@@ -26,12 +27,14 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
     private final TbgroupRepository tbgroupRepository;
     private final TbgroupTbuserRepository tbgroupTbuserRepository;
     private final TbgroupTbuserMapper tbgroupTbuserMapper;
+    private final TbgroupMapper tbgroupMapper;
 
-    public TbgroupTbuserServiceImpl(TbuserRepository tbuserRepository, TbgroupRepository tbgroupRepository, TbgroupTbuserRepository tbgroupTbuserRepository, TbgroupTbuserMapper tbgroupTbuserMapper) {
+    public TbgroupTbuserServiceImpl(TbuserRepository tbuserRepository, TbgroupRepository tbgroupRepository, TbgroupTbuserRepository tbgroupTbuserRepository, TbgroupTbuserMapper tbgroupTbuserMapper, TbgroupMapper tbgroupMapper) {
         this.tbuserRepository = tbuserRepository;
         this.tbgroupRepository = tbgroupRepository;
         this.tbgroupTbuserRepository = tbgroupTbuserRepository;
         this.tbgroupTbuserMapper = tbgroupTbuserMapper;
+        this.tbgroupMapper = tbgroupMapper;
     }
 
     @Override
@@ -55,6 +58,9 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
                         .map(tbuserTbgroup -> {
                         if(tbuserTbgroup.getDeleted().equals("Y")) throw new UserAlreadyLeavedException("User is already leaved");
                         tbuserTbgroup.setDeleted("Y");
+                        if(tbuserTbgroup.getRole().equals("group_admin")){
+                            tbgroupMapper.groupAdminLeave(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build());
+                        }
                         return tbuserTbgroup;
                     })
                     .orElseThrow(() -> new NoMatchingDataException("Group or User not found"))
