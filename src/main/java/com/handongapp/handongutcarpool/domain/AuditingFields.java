@@ -25,10 +25,6 @@ public abstract class AuditingFields {
     @Setter
     protected String deleted;
 
-    @Column(nullable = true)
-    @Setter
-    protected String process;
-
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
     @Column(nullable = false, updatable = false)
