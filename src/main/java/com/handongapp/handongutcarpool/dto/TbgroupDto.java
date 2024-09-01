@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 
 public class TbgroupDto {
     @Builder
@@ -46,8 +48,18 @@ public class TbgroupDto {
         @NotEmpty
         private Integer maxCount;
 
+        @Schema(description = "maxLuggage", example="4")
+        @NotNull
+        @NotEmpty
+        private Integer maxLuggage;
+
+        @Schema(description = "departureAt", example="2024-09-01T19:37:30")
+        @NotNull
+        @NotEmpty
+        private LocalDateTime departureAt;
+
         public Tbgroup toEntity() {
-            return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxCount);
+            return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxCount, maxLuggage, departureAt);
         }
     }
 
