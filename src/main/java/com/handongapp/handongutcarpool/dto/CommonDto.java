@@ -3,7 +3,7 @@ package com.handongapp.handongutcarpool.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-public class BasicDto {
+public class CommonDto {
     @Builder
     @Schema
     @Getter

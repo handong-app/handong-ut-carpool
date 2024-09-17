@@ -3,7 +3,7 @@ package com.handongapp.handongutcarpool.service.impl;
 
 import com.handongapp.handongutcarpool.domain.Tbgroup;
 import com.handongapp.handongutcarpool.domain.TbgroupTbuser;
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import com.handongapp.handongutcarpool.exception.*;
 import com.handongapp.handongutcarpool.mapper.TbgroupMapper;
@@ -59,7 +59,7 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
                         if(tbuserTbgroup.getDeleted().equals("Y")) throw new UserAlreadyLeavedException("User is already leaved");
                         tbuserTbgroup.setDeleted("Y");
                         if(tbuserTbgroup.getRole().equals("group_admin")){
-                            tbgroupMapper.groupAdminLeave(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build());
+                            tbgroupMapper.groupAdminLeave(CommonDto.IdReqDto.builder().id(param.getTbgroupId()).build());
                         }
                         return tbuserTbgroup;
                     })
@@ -77,10 +77,10 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
                 .map(
                     tbgroupTbuser -> {
                         if(tbgroupTbuser.getDeleted().equals("N")) throw new UserAlreadyInGroupException("User is already in group");
-                        if (Boolean.TRUE.equals(isGroupFull(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsFull())){
+                        if (Boolean.TRUE.equals(isGroupFull(CommonDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsFull())){
                             throw new GroupFullException("Group Full");
                         }
-                        if (Boolean.TRUE.equals(isGroupLock(BasicDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsLock())){
+                        if (Boolean.TRUE.equals(isGroupLock(CommonDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsLock())){
                             throw new GroupLockedException("Group Locked");
                         }
                         return tbgroupTbuser;
@@ -88,17 +88,17 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
                 );
     }
 
-    public TbgroupTbuserDto.IsFullServDto isGroupFull(BasicDto.IdReqDto param){
+    public TbgroupTbuserDto.IsFullServDto isGroupFull(CommonDto.IdReqDto param){
         return TbgroupTbuserDto.IsFullServDto.builder()
                 .isFull(tbgroupTbuserMapper.userCount(param).getTbuserCount() >= tbgroupRepository.findById(param.getId()).map(Tbgroup::getMaxCount).orElseThrow(() -> new NoMatchingDataException("Group not found")))
                 .build();
     }
 
-    public TbgroupTbuserDto.IsLockServDto isGroupLock(BasicDto.IdReqDto param){
+    public TbgroupTbuserDto.IsLockServDto isGroupLock(CommonDto.IdReqDto param){
         return TbgroupTbuserDto.IsLockServDto.builder().isLock(tbgroupRepository.findById(param.getId()).map(Tbgroup::getLocked).orElseThrow(() -> new NoMatchingDataException("Group not found"))).build();
     }
 
-    public TbgroupTbuserDto.UserCountResDto userCount(BasicDto.IdReqDto param){
+    public TbgroupTbuserDto.UserCountResDto userCount(CommonDto.IdReqDto param){
         return tbgroupTbuserMapper.userCount(param);
     }
 

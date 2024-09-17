@@ -1,7 +1,7 @@
 package com.handongapp.handongutcarpool.controller;
 
 
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import com.handongapp.handongutcarpool.service.TbgroupTbuserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,7 +56,7 @@ public class TbgroupTbuserRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/count")
-    public ResponseEntity<TbgroupTbuserDto.UserCountResDto> userCount(@Valid @RequestBody BasicDto.IdReqDto param){
+    public ResponseEntity<TbgroupTbuserDto.UserCountResDto> userCount(@Valid @RequestBody CommonDto.IdReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.userCount(param));
     }
 }

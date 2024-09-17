@@ -1,6 +1,6 @@
 package com.handongapp.handongutcarpool.controller;
 
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbuserDto;
 import com.handongapp.handongutcarpool.service.TbuserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,7 @@ public class TbuserRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/create")
-    public ResponseEntity<BasicDto.IdResDto> create(@Valid @RequestBody TbuserDto.CreateReqDto param){
+    public ResponseEntity<CommonDto.IdResDto> create(@Valid @RequestBody TbuserDto.CreateReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.createOrUpdate(param));
     }
 
@@ -43,7 +43,7 @@ public class TbuserRestController {
                     + "@exception 필수 파라미터 누락하였을 때, 사용자가 없을 때 등 <br />"
     )
     @PostMapping("/update/penalty")
-    public ResponseEntity<BasicDto.IdResDto> updatePenalty(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
+    public ResponseEntity<CommonDto.IdResDto> updatePenalty(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.updatePenalty(param));
     }
 }

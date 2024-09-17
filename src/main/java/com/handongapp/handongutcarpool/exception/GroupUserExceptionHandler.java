@@ -2,7 +2,7 @@ package com.handongapp.handongutcarpool.exception;
 
 import com.handongapp.handongutcarpool.controller.TbgroupRestController;
 import com.handongapp.handongutcarpool.controller.TbgroupTbuserRestController;
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +42,8 @@ public class GroupUserExceptionHandler {
     }
 
     @ExceptionHandler(GroupAlreadyCreatedException.class)
-    public ResponseEntity<BasicDto.IdResDto> handleGroupAlreadyCreatedException(GroupAlreadyCreatedException ex) {
+    public ResponseEntity<CommonDto.IdResDto> handleGroupAlreadyCreatedException(GroupAlreadyCreatedException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(BasicDto.IdResDto.builder().id(ex.getMessage()).build());
+                .body(CommonDto.IdResDto.builder().id(ex.getMessage()).build());
     }
 }

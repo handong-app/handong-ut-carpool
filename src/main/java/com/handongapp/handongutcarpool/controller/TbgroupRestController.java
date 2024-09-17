@@ -1,6 +1,6 @@
 package com.handongapp.handongutcarpool.controller;
 
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
 import com.handongapp.handongutcarpool.service.TbgroupService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,7 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/create")
-    public ResponseEntity<BasicDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
+    public ResponseEntity<CommonDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupService.create(param));
     }
 
@@ -43,7 +43,7 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/toggle/lock")
-    public ResponseEntity<BasicDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
+    public ResponseEntity<CommonDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.toggleLock(param));
     }
 
@@ -54,7 +54,7 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/update/status")
-    public ResponseEntity<BasicDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
+    public ResponseEntity<CommonDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.updateStatus(param));
     }
 }

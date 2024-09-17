@@ -1,8 +1,7 @@
 package com.handongapp.handongutcarpool.service.impl;
 
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
-import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
 import com.handongapp.handongutcarpool.exception.GroupAlreadyCreatedException;
 import com.handongapp.handongutcarpool.exception.NoAuthorizationException;
 import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
@@ -30,10 +29,10 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public BasicDto.IdResDto create(TbgroupDto.CreateReqDto param){
+    public CommonDto.IdResDto create(TbgroupDto.CreateReqDto param){
         return tbuserRepository.findById(param.getTbuserId())
                 .map(existingTbuser -> {
-                    BasicDto.IdResDto res = tbgroupRepository.save(param.toEntity()).toIdResDto();
+                    CommonDto.IdResDto res = tbgroupRepository.save(param.toEntity()).toIdResDto();
                     enterGroupAfterCreate(TbgroupDto.EnterGroupReqDto.builder().tbgroupId(res.getId()).tbuserId(param.getTbuserId()).build());
                     return res;
                 })
@@ -49,7 +48,7 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public BasicDto.IdResDto toggleLock(TbgroupDto.LockReqDto param){
+    public CommonDto.IdResDto toggleLock(TbgroupDto.LockReqDto param){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
                     if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
@@ -62,7 +61,7 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public BasicDto.IdResDto updateStatus(TbgroupDto.UpdateStatusReqDto param){
+    public CommonDto.IdResDto updateStatus(TbgroupDto.UpdateStatusReqDto param){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
                     if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){

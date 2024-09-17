@@ -1,6 +1,6 @@
 package com.handongapp.handongutcarpool.service.impl;
 
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbuserDto;
 import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
@@ -22,7 +22,7 @@ public class TbuserServiceImpl implements TbuserService {
     }
 
     @Override
-    public BasicDto.IdResDto createOrUpdate(TbuserDto.CreateReqDto param){
+    public CommonDto.IdResDto createOrUpdate(TbuserDto.CreateReqDto param){
         return tbuserRepository.findByHakbun(param.getHakbun())
                 // 기존 유저가 존재시 실행
                 .map(existingTbuser -> {
@@ -35,7 +35,7 @@ public class TbuserServiceImpl implements TbuserService {
     }
 
     @Override
-    public BasicDto.IdResDto updatePenalty(TbuserDto.UpdatePenaltyReqDto param){
+    public CommonDto.IdResDto updatePenalty(TbuserDto.UpdatePenaltyReqDto param){
         return tbuserRepository.findById(param.getId())
                 .map(existingTbuser -> {
                     existingTbuser.setPenaltyUntil(param.getPenaltyUntil());
