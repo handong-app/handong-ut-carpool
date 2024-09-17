@@ -1,6 +1,6 @@
 package com.handongapp.handongutcarpool.domain;
 
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Index;
@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @Table(indexes = {
         @Index(columnList = "deleted"),
-        @Index(columnList = "process"),
         @Index(columnList = "createdAt"),
         @Index(columnList = "modifiedAt")
 })
@@ -46,7 +45,7 @@ public class Tbgroup extends AuditingFields{
         return new Tbgroup(tbuserId, fromLocation, toLocation, detail, false, maxCount, maxLuggage, departureAt, "recruiting");
     }
 
-    public BasicDto.IdResDto toIdResDto() {
-        return BasicDto.IdResDto.builder().id(this.getId()).build();
+    public CommonDto.IdResDto toIdResDto() {
+        return CommonDto.IdResDto.builder().id(this.getId()).build();
     }
 }

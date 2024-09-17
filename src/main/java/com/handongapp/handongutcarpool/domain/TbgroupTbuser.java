@@ -11,7 +11,6 @@ import lombok.Setter;
         name = "tbgroup_tbuser",
         indexes = {
             @Index(columnList = "deleted"),
-            @Index(columnList = "process"),
             @Index(columnList = "createdAt"),
             @Index(columnList = "modifiedAt")
         }

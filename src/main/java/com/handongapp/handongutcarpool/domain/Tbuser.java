@@ -1,6 +1,6 @@
 package com.handongapp.handongutcarpool.domain;
 
-import com.handongapp.handongutcarpool.dto.BasicDto;
+import com.handongapp.handongutcarpool.dto.CommonDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Table(indexes = {
         @Index(columnList = "deleted"),
-        @Index(columnList = "process"),
         @Index(columnList = "createdAt"),
         @Index(columnList = "modifiedAt")
 })
@@ -33,7 +32,7 @@ public class Tbuser extends AuditingFields{
         return new Tbuser(hakbun, name, phoneNumber, penaltyUntil);
     }
 
-    public BasicDto.IdResDto toIdResDto() {
-        return BasicDto.IdResDto.builder().id(this.getId()).build();
+    public CommonDto.IdResDto toIdResDto() {
+        return CommonDto.IdResDto.builder().id(this.getId()).build();
     }
 }
