@@ -68,7 +68,7 @@ public class TbgroupDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class EnterGroupReqDto{
+    public static class EnterGroupAdminReqDto {
         @Schema(description = "group leader", example = "UUID")
         @NotNull
         @NotEmpty
@@ -82,7 +82,8 @@ public class TbgroupDto {
         private String tbgroupId;
 
         public TbgroupTbuser toEntity() {
-            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_admin");
+            // 보통 최대 짐 개수는 방장의 것을 빼고 설정하므로 짐 개수를 0으로 설정
+            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_admin", 0);
         }
     }
 
@@ -132,5 +133,82 @@ public class TbgroupDto {
         private String status;
     }
 
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailReqDto{
+        @Schema(description = "TbgorupId", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbgroupId;
+    }
 
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailResDto{
+        @Schema(description = "group leader hakbun", example = "22000000")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String groupLeaderHakbun;
+
+
+        @Schema(description = "group leader name", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String groupLeaderName;
+
+
+        @Schema(description = "detail", example="SUV 차량입니다. 캐리어 가능합니다.")
+        @NotNull
+        @NotEmpty
+        @Size(max=200)
+        private String detail;
+
+
+        @Schema(description = "fromLocation", example="한동대 택시정류장")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String fromLocation;
+
+        @Schema(description = "toLocation", example="양덕 유야")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String toLocation;
+
+
+        @Schema(description = "maxCount", example="4")
+        @NotNull
+        @NotEmpty
+        private Integer maxCount;
+
+
+        @Schema(description = "currentCount", example="1")
+        @NotNull
+        @NotEmpty
+        private Integer currentCount;
+
+
+        @Schema(description = "maxLuggage", example="4")
+        @NotNull
+        @NotEmpty
+        private Integer maxLuggage;
+
+
+        @Schema(description = "departureAt", example="2024-09-01T19:37:30")
+        @NotNull
+        @NotEmpty
+        private LocalDateTime departureAt;
+    }
 }
