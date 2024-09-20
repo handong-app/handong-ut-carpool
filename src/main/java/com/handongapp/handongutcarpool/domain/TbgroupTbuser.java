@@ -20,15 +20,17 @@ public class TbgroupTbuser extends AuditingFields{
     @Setter @Column(nullable = false, unique = false) private String tbgroupId;
     @Setter @Column(nullable = false, unique = false) private String tbuserId;
     @Setter @Column(nullable = false, unique = false) private String role;
+    @Setter @Column(nullable = false, unique = false) private Integer luggageCount;
 
     protected TbgroupTbuser() {}
-    public TbgroupTbuser(String tbgroupId, String tbuserId, String role) {
+    public TbgroupTbuser(String tbgroupId, String tbuserId, String role, Integer luggageCount) {
         this.tbgroupId = tbgroupId;
         this.tbuserId = tbuserId;
         this.role = role;
+        this.luggageCount = luggageCount;
     }
-    public static TbgroupTbuser of(String tbgroupId, String tbuserId, String role) {
-        return new TbgroupTbuser(tbgroupId, tbuserId, role);
+    public static TbgroupTbuser of(String tbgroupId, String tbuserId, String role, Integer luggageCount) {
+        return new TbgroupTbuser(tbgroupId, tbuserId, role, luggageCount);
     }
 
     public TbgroupTbuserDto.EnterGroupResDto toEnterGroupResDto() {
