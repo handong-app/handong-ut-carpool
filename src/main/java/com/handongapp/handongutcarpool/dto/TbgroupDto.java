@@ -46,7 +46,7 @@ public class TbgroupDto {
         @Schema(description = "maxCount", example="4")
         @NotNull
         @NotEmpty
-        private Integer maxCount;
+        private Integer maxPassengers;
 
         @Schema(description = "maxLuggage", example="4")
         @NotNull
@@ -59,7 +59,7 @@ public class TbgroupDto {
         private LocalDateTime departureAt;
 
         public Tbgroup toEntity() {
-            return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxCount, maxLuggage, departureAt);
+            return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxPassengers, maxLuggage, departureAt);
         }
     }
 
@@ -191,13 +191,13 @@ public class TbgroupDto {
         @Schema(description = "maxCount", example="4")
         @NotNull
         @NotEmpty
-        private Integer maxCount;
+        private Integer maxPassengers;
 
 
         @Schema(description = "currentCount", example="1")
         @NotNull
         @NotEmpty
-        private Integer currentCount;
+        private Integer currentPassengers;
 
 
         @Schema(description = "maxLuggage", example="4")
