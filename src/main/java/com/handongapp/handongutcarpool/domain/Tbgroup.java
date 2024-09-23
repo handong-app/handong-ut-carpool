@@ -23,26 +23,26 @@ public class Tbgroup extends AuditingFields{
     @Setter @Column(nullable = false, unique = false) private String toLocation;
     @Setter @Column(nullable = false, unique = false) private String detail;
     @Setter @Column(nullable = false, unique = false) private Boolean locked;
-    @Setter @Column(nullable = false, unique = false) private Integer maxCount;
-    @Setter @Column(nullable = false, unique = false) private Integer maxLuggageCount;
+    @Setter @Column(nullable = false, unique = false) private Integer maxPassengers;
+    @Setter @Column(nullable = false, unique = false) private Integer maxLuggage;
     @Setter @Column(nullable = false, unique = false) private LocalDateTime departureAt;
     @Setter @Column(nullable = false, unique = false) private String status;
 
     protected Tbgroup() {}
-    public Tbgroup(String tbuserId, String fromLocation, String toLocation, String detail, Boolean locked, Integer maxCount, Integer maxLuggageCount, LocalDateTime departureAt, String status) {
+    public Tbgroup(String tbuserId, String fromLocation, String toLocation, String detail, Boolean locked, Integer maxPassengers, Integer maxLuggage, LocalDateTime departureAt, String status) {
         this.tbuserId = tbuserId;
         this.fromLocation = fromLocation;
         this.toLocation = toLocation;
         this.detail = detail;
         this.locked = locked;
-        this.maxCount = maxCount;
-        this.maxLuggageCount = maxLuggageCount;
+        this.maxPassengers = maxPassengers;
+        this.maxLuggage = maxLuggage;
         this.departureAt = departureAt;
         this.status = status;
     }
     // create 에서 사용하는 메서드, 그룹 엔티티 초기화.
-    public static Tbgroup of(String tbuserId, String fromLocation, String toLocation, String detail, Integer maxCount, Integer maxLuggageCount, LocalDateTime departureAt) {
-        return new Tbgroup(tbuserId, fromLocation, toLocation, detail, false, maxCount, maxLuggageCount, departureAt, "recruiting");
+    public static Tbgroup of(String tbuserId, String fromLocation, String toLocation, String detail, Integer maxPassengers, Integer maxLuggage, LocalDateTime departureAt) {
+        return new Tbgroup(tbuserId, fromLocation, toLocation, detail, false, maxPassengers, maxLuggage, departureAt, "recruiting");
     }
 
     public CommonDto.IdResDto toIdResDto() {
