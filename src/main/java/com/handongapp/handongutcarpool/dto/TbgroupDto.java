@@ -83,7 +83,7 @@ public class TbgroupDto {
 
         public TbgroupTbuser toEntity() {
             // 보통 최대 짐 개수는 방장의 것을 빼고 설정하므로 짐 개수를 0으로 설정
-            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_admin", 0);
+            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_admin", 1, 0);
         }
     }
 

@@ -20,21 +20,23 @@ public class TbgroupTbuser extends AuditingFields{
     @Setter @Column(nullable = false, unique = false) private String tbgroupId;
     @Setter @Column(nullable = false, unique = false) private String tbuserId;
     @Setter @Column(nullable = false, unique = false) private String role;
-    @Setter @Column(nullable = false, unique = false) private Integer luggageCount;
+    @Setter @Column(nullable = false, unique = false) private Integer passengers;
+    @Setter @Column(nullable = false, unique = false) private Integer luggage;
 
     protected TbgroupTbuser() {}
-    public TbgroupTbuser(String tbgroupId, String tbuserId, String role, Integer luggageCount) {
+    public TbgroupTbuser(String tbgroupId, String tbuserId, String role, Integer passengers, Integer luggage) {
         this.tbgroupId = tbgroupId;
         this.tbuserId = tbuserId;
         this.role = role;
-        this.luggageCount = luggageCount;
+        this.passengers = passengers;
+        this.luggage = luggage;
     }
-    public static TbgroupTbuser of(String tbgroupId, String tbuserId, String role, Integer luggageCount) {
-        return new TbgroupTbuser(tbgroupId, tbuserId, role, luggageCount);
+    public static TbgroupTbuser of(String tbgroupId, String tbuserId, String role, Integer passengers, Integer luggage) {
+        return new TbgroupTbuser(tbgroupId, tbuserId, role, passengers, luggage);
     }
 
     public TbgroupTbuser reEnter(TbgroupTbuserDto.EnterGroupServDto servDto){
-        this.luggageCount = servDto.getLuggageCount();
+        this.luggage = servDto.getLuggage();
         this.deleted = "N";
         return this;
     }
