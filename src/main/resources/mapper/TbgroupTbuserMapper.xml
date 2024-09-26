@@ -8,7 +8,7 @@
     </select>
 
     <select id="getLuggageCount" parameterType="hashMap" resultType="com.handongapp.handongutcarpool.dto.TbgroupTbuserDto$LuggageCountResDto">
-        SELECT SUM(tbgroup_tbuser.luggage) AS luggage
+        SELECT SUM(tbgroup_tbuser.luggage) AS luggageCount
         FROM tbgroup_tbuser
         WHERE tbgroup_tbuser.tbgroup_id = #{id} AND tbgroup_tbuser.deleted = 'N'
     </select>
