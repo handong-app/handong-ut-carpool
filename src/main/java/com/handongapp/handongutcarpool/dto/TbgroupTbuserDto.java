@@ -96,6 +96,14 @@ public class TbgroupTbuserDto {
             return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_member", this.passengers, this.luggage);
         }
 
+        public IsGroupOverFlowServDto toIsGroupOverFlowServDto(){
+            return IsGroupOverFlowServDto.builder()
+                    .tbgroupId(this.getTbgroupId())
+                    .passengers(this.getPassengers())
+                    .groupMaxPassengers(this.getGroupMaxPassengers())
+                    .build();
+        }
+
         public IsLuggageOverflowServDto toIsLuggageOverflowServDto() {
             return IsLuggageOverflowServDto.builder()
                     .tbgroupId(this.getTbgroupId())
@@ -195,10 +203,17 @@ public class TbgroupTbuserDto {
         @Size(max = 50)
         private String tbgroupId;
 
+        @Schema(description = "passengers", example = "1")
+        @NotNull
+        private Integer passengers;
 
         @Schema(description = "group_max_passenger", example = "4")
         @NotNull
         private Integer groupMaxPassengers;
+
+        public Boolean getIsGroupOverFlow(Integer currentPassengers) {
+            return this.passengers + currentPassengers > this.groupMaxPassengers;
+        }
 
         public CommonDto.IdReqDto toIdReqDto() {
             return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
@@ -227,8 +242,8 @@ public class TbgroupTbuserDto {
         @NotNull
         private Integer groupMaxLuggage;
 
-        public Boolean getIsLuggageOverflow(Integer currentLuggageCount) {
-            return currentLuggageCount + this.luggage > this.groupMaxLuggage;
+        public Boolean getIsLuggageOverflow(Integer currentLuggage) {
+            return  this.luggage + currentLuggage > this.groupMaxLuggage;
         }
 
         public CommonDto.IdReqDto toIdReqDto() {
