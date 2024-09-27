@@ -7,6 +7,7 @@ import com.handongapp.handongutcarpool.service.TbgroupTbuserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ public class TbgroupTbuserRestController {
     )
     @PostMapping("/enter")
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> enter(@Valid @RequestBody TbgroupTbuserDto.EnterGroupReqDto param){
+        if (param.getLuggageCount()<0) throw new ValidationException("Luggage count must be a non-negative integer");
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.enter(param));
     }
 
