@@ -6,5 +6,15 @@
 <!--        SET deleted = 'Y'-->
 <!--        WHERE id = #{id}-->
 <!--    </update>-->
+    <select id="getMaxLuggageCount" parameterType="hashMap" resultType="Integer">
+        SELECT max_luggage_count
+        FROM tbgroup
+        WHERE tbgroup.id = #{id}
+    </select>
 
+    <select id="getIsLock" parameterType="hashMap" resultType="Boolean">
+        SELECT locked
+        FROM tbgroup
+        WHERE tbgroup.id = #{id}
+    </select>
 </mapper>
