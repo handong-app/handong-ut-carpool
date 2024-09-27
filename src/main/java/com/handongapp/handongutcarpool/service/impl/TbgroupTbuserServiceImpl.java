@@ -76,11 +76,11 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
             throw new GroupLockedException("Group Locked");
         }
         if (Boolean.TRUE.equals(isGroupOverflow(param.toIsGroupOverFlowServDto()))){
-            throw new GroupFullException("Group Full");
+            throw new GroupOverflowException("Group Passenger Overflow");
         }
 
         if (Boolean.TRUE.equals(isLuggageOverflow(param.toIsLuggageOverflowServDto()))){
-            throw new GroupFullException("Group Luggage Overflow");
+            throw new GroupOverflowException("Group Luggage Overflow");
         }
 
         if (Boolean.TRUE.equals(userInGroupServDto.getIsUserLeft())){
@@ -115,18 +115,18 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
     }
 
     public Boolean isGroupOverflow(TbgroupTbuserDto.IsGroupOverFlowServDto param){
-        return param.getIsGroupOverFlow(getPassengerCount(param.toIdReqDto()).getPassengerCount());
+        return param.getPassengers() + getCurrentPassengerCount(param.toIdReqDto()).getPassengerCount() > param.getGroupMaxPassengers();
     }
 
     public Boolean isLuggageOverflow(TbgroupTbuserDto.IsLuggageOverflowServDto param){
-        return param.getIsLuggageOverflow(getLuggageCount(param.toIdReqDto()).getLuggageCount());
+        return param.getLuggage() + getCurrentLuggageCount(param.toIdReqDto()).getLuggageCount() > param.getGroupMaxLuggage();
     }
 
-    public TbgroupTbuserDto.PassengerCountResDto getPassengerCount(CommonDto.IdReqDto param){
+    public TbgroupTbuserDto.PassengerCountResDto getCurrentPassengerCount(CommonDto.IdReqDto param){
         return tbgroupTbuserMapper.getPassengerCount(param);
     }
 
-    public TbgroupTbuserDto.LuggageCountResDto getLuggageCount(CommonDto.IdReqDto param){
+    public TbgroupTbuserDto.LuggageCountResDto getCurrentLuggageCount(CommonDto.IdReqDto param){
         return tbgroupTbuserMapper.getLuggageCount(param);
     }
 

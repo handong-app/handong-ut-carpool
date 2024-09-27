@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value=HttpStatus.CONFLICT)
 @SuppressWarnings("serial")
 @NoArgsConstructor
-public class GroupFullException extends RuntimeException {
-    public GroupFullException(String message) {
+public class GroupOverflowException extends RuntimeException {
+    public GroupOverflowException(String message) {
         super(message);
     }
 
-    public GroupFullException(String message, Throwable cause) { super(message, cause); }
+    public GroupOverflowException(String message, Throwable cause) { super(message, cause); }
 }

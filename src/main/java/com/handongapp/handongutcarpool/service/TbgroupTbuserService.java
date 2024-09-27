@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 public interface TbgroupTbuserService {
     TbgroupTbuserDto.EnterGroupResDto enter(TbgroupTbuserDto.EnterGroupReqDto param);
     TbgroupTbuserDto.LeaveGroupResDto leave(TbgroupTbuserDto.LeaveGroupReqDto param);
-    TbgroupTbuserDto.PassengerCountResDto getPassengerCount(CommonDto.IdReqDto param);
+    TbgroupTbuserDto.PassengerCountResDto getCurrentPassengerCount(CommonDto.IdReqDto param);
 }

@@ -211,10 +211,6 @@ public class TbgroupTbuserDto {
         @NotNull
         private Integer groupMaxPassengers;
 
-        public Boolean getIsGroupOverFlow(Integer currentPassengers) {
-            return this.passengers + currentPassengers > this.groupMaxPassengers;
-        }
-
         public CommonDto.IdReqDto toIdReqDto() {
             return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
         }
@@ -241,10 +237,6 @@ public class TbgroupTbuserDto {
         @Schema(description = "group_max_luggage", example = "4")
         @NotNull
         private Integer groupMaxLuggage;
-
-        public Boolean getIsLuggageOverflow(Integer currentLuggage) {
-            return  this.luggage + currentLuggage > this.groupMaxLuggage;
-        }
 
         public CommonDto.IdReqDto toIdReqDto() {
             return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
