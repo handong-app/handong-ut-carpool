@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.handongapp.handongutcarpool.mapper.TbgroupTbuserMapper">
-    <select id="userCount" parameterType="hashMap" resultType="com.handongapp.handongutcarpool.dto.TbgroupTbuserDto$UserCountResDto">
+    <select id="getUserCount" parameterType="hashMap" resultType="com.handongapp.handongutcarpool.dto.TbgroupTbuserDto$UserCountResDto">
         SELECT COUNT(tbgroup_tbuser.tbuser_id) AS tbuserCount
         FROM tbgroup_tbuser
-        WHERE tbgroup_tbuser.tbgroup_id = #{id} AND tbgroup_tbuser.deleted = "N"
+        WHERE tbgroup_tbuser.tbgroup_id = #{id} AND tbgroup_tbuser.deleted = 'N'
     </select>
 
-
+    <select id="getLuggageCount" parameterType="hashMap" resultType="com.handongapp.handongutcarpool.dto.TbgroupTbuserDto$LuggageCountResDto">
+        SELECT SUM(tbgroup_tbuser.luggage_count) AS luggageCount
+        FROM tbgroup_tbuser
+        WHERE tbgroup_tbuser.tbgroup_id = #{id} AND tbgroup_tbuser.deleted = 'N'
+    </select>
 </mapper>
