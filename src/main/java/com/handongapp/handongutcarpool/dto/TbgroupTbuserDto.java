@@ -2,6 +2,7 @@ package com.handongapp.handongutcarpool.dto;
 
 import com.handongapp.handongutcarpool.domain.TbgroupTbuser;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -29,8 +30,68 @@ public class TbgroupTbuserDto {
         @Size(max = 50)
         private String tbuserId;
 
+        @Schema(description = "luggage_count", example = "1")
+        @NotNull
+        @Min(value = 0, message = "Luggage count must be a non-negative integer")
+        private Integer luggageCount;
+
+        public TbgroupTbuserDto.EnterGroupServDto toServDto(Integer groupMaxCount, Integer groupMaxLuggageCount, Boolean groupIsLock) {
+            return TbgroupTbuserDto.EnterGroupServDto.builder()
+                    .tbgroupId(this.tbgroupId)
+                    .tbuserId(this.tbuserId)
+                    .luggageCount(this.luggageCount)
+                    .groupMaxCount(groupMaxCount)
+                    .groupMaxLuggageCount(groupMaxLuggageCount)
+                    .groupIsLock(groupIsLock)
+                    .build();
+        }
+    }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class EnterGroupServDto {
+        @Schema(description = "tbgroup_id", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbgroupId;
+
+        @Schema(description = "tbuser_id", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbuserId;
+
+        @Schema(description = "luggage_count", example = "1")
+        @NotNull
+        private Integer luggageCount;
+
+        @Schema(description = "group_max_count", example = "4")
+        @NotNull
+        private Integer groupMaxCount;
+
+        @Schema(description = "group_max_luggage_count", example = "4")
+        @NotNull
+        private Integer groupMaxLuggageCount;
+
+        @Schema(description = "group_is_lock", example = "false")
+        @NotNull
+        private Boolean groupIsLock;
+
         public TbgroupTbuser toEntity() {
-            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_member");
+            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_member", this.luggageCount);
+        }
+
+        public IsLuggageOverflowServDto toIsLuggageOverflowServDto() {
+            return IsLuggageOverflowServDto.builder()
+                    .tbgroupId(this.getTbgroupId())
+                    .luggageCount(this.getLuggageCount())
+                    .groupMaxLuggageCount(this.getGroupMaxLuggageCount())
+                    .build();
         }
     }
 
@@ -72,18 +133,17 @@ public class TbgroupTbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class IsUserInGroupServDto {
-        @Schema(description = "tbgroup_id", example = "UUID")
+    public static class UserInGroupServDto {
+        @Schema(description = "is_record_present", example = "true")
         @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbgroupId;
+        private Boolean isRecordPresent;
 
-        @Schema(description = "tbuser_id", example = "UUID")
+        @Schema(description = "is_user_left", example = "true")
         @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbuserId;
+        private Boolean isUserLeft;
+
+        @Schema(description = "tbgroup_tbuser", example = "Object")
+        private TbgroupTbuser existingTbgroupTbuser;
 
     }
 
@@ -97,7 +157,6 @@ public class TbgroupTbuserDto {
     public static class UserCountResDto {
         @Schema(description = "tbuser_count", example = "1")
         @NotNull
-        @NotEmpty
         private Integer tbuserCount;
     }
 
@@ -107,20 +166,65 @@ public class TbgroupTbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class IsFullServDto {
-        @Schema(description = "is_full", example = "true")
+    public static class LuggageCountResDto {
+        @Schema(description = "luggage_count", example = "1")
         @NotNull
-        @NotEmpty
-        private Boolean isFull;
+        private Integer luggageCount;
     }
 
     @Builder
+    @Schema
     @Getter
-    public static class IsLockServDto {
-        @Schema(description = "is_lock", example = "true")
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IsGroupOverFlowServDto {
+        @Schema(description = "tbgroup_id", example = "UUID")
         @NotNull
         @NotEmpty
-        private Boolean isLock;
+        @Size(max = 50)
+        private String tbgroupId;
+
+
+
+        @Schema(description = "group_max_count", example = "4")
+        @NotNull
+        private Integer groupMaxCount;
+
+        public CommonDto.IdReqDto toIdReqDto() {
+            return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
+        }
+    }
+
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IsLuggageOverflowServDto {
+        @Schema(description = "tbgroup_id", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbgroupId;
+
+        @Schema(description = "luggage_count", example = "1")
+        @NotNull
+        private Integer luggageCount;
+
+        @Schema(description = "group_max_luggage_count", example = "4")
+        @NotNull
+        private Integer groupMaxLuggageCount;
+
+        public Boolean getIsLuggageOverflow(Integer currentLuggageCount) {
+            return currentLuggageCount + this.luggageCount > this.groupMaxLuggageCount;
+        }
+
+        public CommonDto.IdReqDto toIdReqDto() {
+            return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
+        }
     }
 
 
