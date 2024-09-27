@@ -160,20 +160,17 @@ public class TbgroupDto {
         @Size(max = 50)
         private String groupLeaderHakbun;
 
-
         @Schema(description = "group leader name", example = "UUID")
         @NotNull
         @NotEmpty
         @Size(max = 50)
         private String groupLeaderName;
 
-
         @Schema(description = "detail", example="SUV 차량입니다. 캐리어 가능합니다.")
         @NotNull
         @NotEmpty
         @Size(max=200)
         private String detail;
-
 
         @Schema(description = "fromLocation", example="한동대 택시정류장")
         @NotNull
@@ -187,28 +184,34 @@ public class TbgroupDto {
         @Size(max=100)
         private String toLocation;
 
-
         @Schema(description = "maxCount", example="4")
         @NotNull
-        @NotEmpty
         private Integer maxPassengers;
-
 
         @Schema(description = "currentCount", example="1")
         @NotNull
-        @NotEmpty
         private Integer currentPassengers;
-
 
         @Schema(description = "maxLuggage", example="4")
         @NotNull
-        @NotEmpty
         private Integer maxLuggage;
 
+        @Schema(description = "currentLuggage", example="4")
+        @NotNull
+        private Integer currentLuggage;
+
+        @Schema(description = "status", example = "recruiting")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String status;
+
+        @Schema(description = "isLocked", example="false")
+        @NotNull
+        private Boolean isLocked;
 
         @Schema(description = "departureAt", example="2024-09-01T19:37:30")
         @NotNull
-        @NotEmpty
         private LocalDateTime departureAt;
     }
 }
