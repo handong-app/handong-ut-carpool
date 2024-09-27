@@ -75,7 +75,7 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
         if (Boolean.TRUE.equals(param.getGroupIsLock())){
             throw new GroupLockedException("Group Locked");
         }
-        if (Boolean.TRUE.equals(isGroupFull(TbgroupTbuserDto.IsGroupOverFlowServDto.builder().tbgroupId(param.getTbgroupId()).groupMaxPassengers(param.getGroupMaxPassengers()).build()))){
+        if (Boolean.TRUE.equals(isGroupOverflow(param.toIsGroupOverFlowServDto()))){
             throw new GroupFullException("Group Full");
         }
 
@@ -114,8 +114,8 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
 
     }
 
-    public Boolean isGroupFull(TbgroupTbuserDto.IsGroupOverFlowServDto param){
-        return tbgroupTbuserMapper.getPassengerCount(param.toIdReqDto()).getPassengerCount() >= param.getGroupMaxPassengers();
+    public Boolean isGroupOverflow(TbgroupTbuserDto.IsGroupOverFlowServDto param){
+        return param.getIsGroupOverFlow(getPassengerCount(param.toIdReqDto()).getPassengerCount());
     }
 
     public Boolean isLuggageOverflow(TbgroupTbuserDto.IsLuggageOverflowServDto param){
