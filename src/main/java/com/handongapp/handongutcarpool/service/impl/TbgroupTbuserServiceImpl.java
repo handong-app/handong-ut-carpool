@@ -76,11 +76,11 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
             throw new GroupLockedException("Group Locked");
         }
         if (Boolean.TRUE.equals(isGroupOverflow(param.toIsGroupOverFlowServDto()))){
-            throw new GroupFullException("Group Full");
+            throw new GroupOverflowException("Group Passenger Overflow");
         }
 
         if (Boolean.TRUE.equals(isLuggageOverflow(param.toIsLuggageOverflowServDto()))){
-            throw new GroupFullException("Group Luggage Overflow");
+            throw new GroupOverflowException("Group Luggage Overflow");
         }
 
         if (Boolean.TRUE.equals(userInGroupServDto.getIsUserLeft())){

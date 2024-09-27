@@ -31,8 +31,8 @@ public class GroupUserExceptionHandler {
                 .body(TbgroupTbuserDto.EnterGroupResDto.builder().message(ex.getMessage()).build());
     }
 
-    @ExceptionHandler(GroupFullException.class)
-    public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleGroupFullException(GroupFullException ex) {
+    @ExceptionHandler(GroupOverflowException.class)
+    public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleGroupFullException(GroupOverflowException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(TbgroupTbuserDto.EnterGroupResDto.builder().message(ex.getMessage()).build());
     }
