@@ -33,6 +33,12 @@ public class TbgroupTbuser extends AuditingFields{
         return new TbgroupTbuser(tbgroupId, tbuserId, role, luggageCount);
     }
 
+    public TbgroupTbuser reEnter(TbgroupTbuserDto.EnterGroupServDto servDto){
+        this.luggageCount = servDto.getLuggageCount();
+        this.deleted = "N";
+        return this;
+    }
+
     public TbgroupTbuserDto.EnterGroupResDto toEnterGroupResDto() {
         return TbgroupTbuserDto.EnterGroupResDto.builder().tbgroupId(this.tbgroupId).tbuserId(this.tbuserId).role(this.role).message("success").build();
     }
