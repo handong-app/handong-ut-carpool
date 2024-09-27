@@ -119,14 +119,14 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
     }
 
     public Boolean isLuggageOverflow(TbgroupTbuserDto.IsLuggageOverflowServDto param){
-        return param.getIsLuggageOverflow(getLuggageCount(param.toIdReqDto()).getLuggageCount());
+        return param.getLuggage() + getCurrentLuggageCount(param.toIdReqDto()).getLuggageCount() > param.getGroupMaxLuggage();
     }
 
     public TbgroupTbuserDto.PassengerCountResDto getCurrentPassengerCount(CommonDto.IdReqDto param){
         return tbgroupTbuserMapper.getPassengerCount(param);
     }
 
-    public TbgroupTbuserDto.LuggageCountResDto getLuggageCount(CommonDto.IdReqDto param){
+    public TbgroupTbuserDto.LuggageCountResDto getCurrentLuggageCount(CommonDto.IdReqDto param){
         return tbgroupTbuserMapper.getLuggageCount(param);
     }
 

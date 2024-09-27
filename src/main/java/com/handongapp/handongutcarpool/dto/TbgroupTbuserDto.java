@@ -238,10 +238,6 @@ public class TbgroupTbuserDto {
         @NotNull
         private Integer groupMaxLuggage;
 
-        public Boolean getIsLuggageOverflow(Integer currentLuggage) {
-            return  this.luggage + currentLuggage > this.groupMaxLuggage;
-        }
-
         public CommonDto.IdReqDto toIdReqDto() {
             return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
         }
