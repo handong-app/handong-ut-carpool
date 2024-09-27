@@ -46,7 +46,7 @@ public class TbgroupDto {
         @Schema(description = "maxCount", example="4")
         @NotNull
         @NotEmpty
-        private Integer maxCount;
+        private Integer maxPassengers;
 
         @Schema(description = "maxLuggage", example="4")
         @NotNull
@@ -59,7 +59,7 @@ public class TbgroupDto {
         private LocalDateTime departureAt;
 
         public Tbgroup toEntity() {
-            return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxCount, maxLuggage, departureAt);
+            return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxPassengers, maxLuggage, departureAt);
         }
     }
 
@@ -83,7 +83,7 @@ public class TbgroupDto {
 
         public TbgroupTbuser toEntity() {
             // 보통 최대 짐 개수는 방장의 것을 빼고 설정하므로 짐 개수를 0으로 설정
-            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_admin", 0);
+            return TbgroupTbuser.of(this.tbgroupId, this.tbuserId, "group_admin", 1, 0);
         }
     }
 
@@ -191,13 +191,13 @@ public class TbgroupDto {
         @Schema(description = "maxCount", example="4")
         @NotNull
         @NotEmpty
-        private Integer maxCount;
+        private Integer maxPassengers;
 
 
         @Schema(description = "currentCount", example="1")
         @NotNull
         @NotEmpty
-        private Integer currentCount;
+        private Integer currentPassengers;
 
 
         @Schema(description = "maxLuggage", example="4")

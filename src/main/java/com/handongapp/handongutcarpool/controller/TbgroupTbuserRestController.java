@@ -36,7 +36,8 @@ public class TbgroupTbuserRestController {
     )
     @PostMapping("/enter")
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> enter(@Valid @RequestBody TbgroupTbuserDto.EnterGroupReqDto param){
-        if (param.getLuggageCount()<0) throw new ValidationException("Luggage count must be a non-negative integer");
+        if (param.getLuggage()<0) throw new ValidationException("Luggage must be a non-negative integer");
+        if (param.getPassengers()<1) throw new ValidationException("Passengers must be lager then 1");
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.enter(param));
     }
 
@@ -58,7 +59,7 @@ public class TbgroupTbuserRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/count")
-    public ResponseEntity<TbgroupTbuserDto.UserCountResDto> userCount(@Valid @RequestBody CommonDto.IdReqDto param){
-        return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.userCount(param));
+    public ResponseEntity<TbgroupTbuserDto.PassengerCountResDto> userCount(@Valid @RequestBody CommonDto.IdReqDto param){
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.getPassengerCount(param));
     }
 }

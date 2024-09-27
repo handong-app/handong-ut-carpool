@@ -1,7 +1,6 @@
 package com.handongapp.handongutcarpool.service.impl;
 
 
-import com.handongapp.handongutcarpool.domain.Tbgroup;
 import com.handongapp.handongutcarpool.domain.TbgroupTbuser;
 import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
@@ -40,14 +38,12 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
     @Override
     public TbgroupTbuserDto.EnterGroupResDto enter(TbgroupTbuserDto.EnterGroupReqDto param){
         return tbgroupRepository.findById(param.getTbgroupId())
-                .map(existingTbgroup -> tbgroupTbuserRepository.save(
-                        validatedAndReturn(param)
-                                .map(tbuserTbgroup -> {
-                                    tbuserTbgroup.setDeleted("N");
-                                    return tbuserTbgroup;
-                                })
-                                .orElse(param.toEntity())
-                ).toEnterGroupResDto())
+                .map(existingTbgroup -> {
+                    if(existingTbgroup.getDeleted().equals("Y")) throw new NoMatchingDataException("Group deleted");
+                    return tbgroupTbuserRepository
+                            .save(validatedAndReturn(param.toServDto(existingTbgroup.getMaxPassengers(), existingTbgroup.getMaxLuggage(), existingTbgroup.getLocked())))
+                            .toEnterGroupResDto();
+                })
                 .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
 
@@ -56,50 +52,82 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
         tbgroupTbuserRepository.save(
                 tbgroupTbuserRepository.findByTbgroupIdAndTbuserId(param.getTbgroupId(), param.getTbuserId())
                         .map(tbuserTbgroup -> {
-                        if(tbuserTbgroup.getDeleted().equals("Y")) throw new UserAlreadyLeavedException("User is already leaved");
-                        tbuserTbgroup.setDeleted("Y");
-                        if(tbuserTbgroup.getRole().equals("group_admin")){
-                            tbgroupMapper.groupAdminLeave(CommonDto.IdReqDto.builder().id(param.getTbgroupId()).build());
-                        }
-                        return tbuserTbgroup;
-                    })
-                    .orElseThrow(() -> new NoMatchingDataException("Group or User not found"))
+                            if(tbuserTbgroup.getDeleted().equals("Y")) throw new UserAlreadyLeavedException("User is already leaved");
+                            tbuserTbgroup.setDeleted("Y");
+                            if(tbuserTbgroup.getRole().equals("group_admin")){
+                                tbgroupMapper.groupAdminLeave(CommonDto.IdReqDto.builder().id(param.getTbgroupId()).build());
+                            }
+                            return tbuserTbgroup;})
+                        .orElseThrow(() -> new NoMatchingDataException("Group or User not found"))
         );
         return TbgroupTbuserDto.LeaveGroupResDto.builder().tbgroupId(param.getTbgroupId()).tbuserId(param.getTbuserId()).message("success").build();
     }
 
-
-    private Optional<TbgroupTbuser> validatedAndReturn(TbgroupTbuserDto.EnterGroupReqDto param){
+    private TbgroupTbuser validatedAndReturn(TbgroupTbuserDto.EnterGroupServDto param){
         if (!tbuserRepository.existsById(param.getTbuserId())) {
             throw new NoMatchingDataException("User not found");
         }
+
+        TbgroupTbuserDto.UserInGroupServDto userInGroupServDto = validateIfUserInGroup(param);
+        if (Boolean.TRUE.equals(userInGroupServDto.getIsRecordPresent()) && Boolean.FALSE.equals(userInGroupServDto.getIsUserLeft())){
+            throw new UserAlreadyInGroupException("User is already in group");
+        }
+        if (Boolean.TRUE.equals(param.getGroupIsLock())){
+            throw new GroupLockedException("Group Locked");
+        }
+        if (Boolean.TRUE.equals(isGroupOverflow(param.toIsGroupOverFlowServDto()))){
+            throw new GroupFullException("Group Full");
+        }
+
+        if (Boolean.TRUE.equals(isLuggageOverflow(param.toIsLuggageOverflowServDto()))){
+            throw new GroupFullException("Group Luggage Overflow");
+        }
+
+        if (Boolean.TRUE.equals(userInGroupServDto.getIsUserLeft())){
+            return userInGroupServDto.getExistingTbgroupTbuser().reEnter(param);
+        }
+        else return param.toEntity();
+    }
+
+    public TbgroupTbuserDto.UserInGroupServDto validateIfUserInGroup(TbgroupTbuserDto.EnterGroupServDto param) {
         return tbgroupTbuserRepository.findByTbgroupIdAndTbuserId(param.getTbgroupId(), param.getTbuserId())
-                .map(
-                    tbgroupTbuser -> {
-                        if(tbgroupTbuser.getDeleted().equals("N")) throw new UserAlreadyInGroupException("User is already in group");
-                        if (Boolean.TRUE.equals(isGroupFull(CommonDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsFull())){
-                            throw new GroupFullException("Group Full");
-                        }
-                        if (Boolean.TRUE.equals(isGroupLock(CommonDto.IdReqDto.builder().id(param.getTbgroupId()).build()).getIsLock())){
-                            throw new GroupLockedException("Group Locked");
-                        }
-                        return tbgroupTbuser;
-                    }
-                );
+                .map(tbgroupTbuser -> {
+                            if (tbgroupTbuser.getDeleted().equals("Y")) {
+                                return TbgroupTbuserDto.UserInGroupServDto.builder()
+                                        .isRecordPresent(true)
+                                        .isUserLeft(true)
+                                        .existingTbgroupTbuser(tbgroupTbuser)
+                                        .build();
+                            } else {
+                                return TbgroupTbuserDto.UserInGroupServDto.builder()
+                                        .isRecordPresent(true)
+                                        .isUserLeft(false)
+                                        .existingTbgroupTbuser(null)
+                                        .build();
+                            }
+                        })
+                .orElse(TbgroupTbuserDto.UserInGroupServDto.builder()
+                        .isRecordPresent(false)
+                        .isUserLeft(false)
+                        .existingTbgroupTbuser(null)
+                        .build());
+
     }
 
-    public TbgroupTbuserDto.IsFullServDto isGroupFull(CommonDto.IdReqDto param){
-        return TbgroupTbuserDto.IsFullServDto.builder()
-                .isFull(tbgroupTbuserMapper.userCount(param).getTbuserCount() >= tbgroupRepository.findById(param.getId()).map(Tbgroup::getMaxCount).orElseThrow(() -> new NoMatchingDataException("Group not found")))
-                .build();
+    public Boolean isGroupOverflow(TbgroupTbuserDto.IsGroupOverFlowServDto param){
+        return param.getIsGroupOverFlow(getPassengerCount(param.toIdReqDto()).getPassengerCount());
     }
 
-    public TbgroupTbuserDto.IsLockServDto isGroupLock(CommonDto.IdReqDto param){
-        return TbgroupTbuserDto.IsLockServDto.builder().isLock(tbgroupRepository.findById(param.getId()).map(Tbgroup::getLocked).orElseThrow(() -> new NoMatchingDataException("Group not found"))).build();
+    public Boolean isLuggageOverflow(TbgroupTbuserDto.IsLuggageOverflowServDto param){
+        return param.getIsLuggageOverflow(getLuggageCount(param.toIdReqDto()).getLuggageCount());
     }
 
-    public TbgroupTbuserDto.UserCountResDto userCount(CommonDto.IdReqDto param){
-        return tbgroupTbuserMapper.userCount(param);
+    public TbgroupTbuserDto.PassengerCountResDto getPassengerCount(CommonDto.IdReqDto param){
+        return tbgroupTbuserMapper.getPassengerCount(param);
+    }
+
+    public TbgroupTbuserDto.LuggageCountResDto getLuggageCount(CommonDto.IdReqDto param){
+        return tbgroupTbuserMapper.getLuggageCount(param);
     }
 
 }

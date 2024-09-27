@@ -6,8 +6,8 @@
 <!--        SET deleted = 'Y'-->
 <!--        WHERE id = #{id}-->
 <!--    </update>-->
-    <select id="getMaxLuggageCount" parameterType="hashMap" resultType="Integer">
-        SELECT max_luggage_count
+    <select id="getMaxLuggage" parameterType="hashMap" resultType="Integer">
+        SELECT max_luggage
         FROM tbgroup
         WHERE tbgroup.id = #{id}
     </select>
