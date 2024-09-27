@@ -33,13 +33,13 @@ public class TbgroupServiceImpl implements TbgroupService {
         return tbuserRepository.findById(param.getTbuserId())
                 .map(existingTbuser -> {
                     CommonDto.IdResDto res = tbgroupRepository.save(param.toEntity()).toIdResDto();
-                    enterGroupAfterCreate(TbgroupDto.EnterGroupReqDto.builder().tbgroupId(res.getId()).tbuserId(param.getTbuserId()).build());
+                    enterGroupAfterCreate(TbgroupDto.EnterGroupAdminReqDto.builder().tbgroupId(res.getId()).tbuserId(param.getTbuserId()).build());
                     return res;
                 })
                 .orElseThrow(() -> new NoMatchingDataException("User Not Exists"));
     }
 
-    private void enterGroupAfterCreate(TbgroupDto.EnterGroupReqDto param) {
+    private void enterGroupAfterCreate(TbgroupDto.EnterGroupAdminReqDto param) {
         tbgroupTbuserRepository.findByTbgroupIdAndTbuserId(param.getTbuserId(), param.getTbuserId())
                 .map(existingTbgroupTbuser -> {
                     throw new GroupAlreadyCreatedException("Group Already Exists");
