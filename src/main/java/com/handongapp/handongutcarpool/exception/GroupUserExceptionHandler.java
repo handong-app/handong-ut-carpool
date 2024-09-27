@@ -4,6 +4,7 @@ import com.handongapp.handongutcarpool.controller.TbgroupRestController;
 import com.handongapp.handongutcarpool.controller.TbgroupTbuserRestController;
 import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +12,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(assignableTypes = {TbgroupRestController.class, TbgroupTbuserRestController.class})
 public class GroupUserExceptionHandler {
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<CommonDto.IdResDto> handleValidationException(ValidationException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(CommonDto.IdResDto.builder().id(ex.getMessage()).build());
+    }
+
     @ExceptionHandler(UserAlreadyInGroupException.class)
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> handleUserAlreadyInGroupException(UserAlreadyInGroupException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
