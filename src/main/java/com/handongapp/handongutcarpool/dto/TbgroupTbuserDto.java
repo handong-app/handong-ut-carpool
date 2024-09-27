@@ -211,10 +211,6 @@ public class TbgroupTbuserDto {
         @NotNull
         private Integer groupMaxPassengers;
 
-        public Boolean getIsGroupOverFlow(Integer currentPassengers) {
-            return this.passengers + currentPassengers > this.groupMaxPassengers;
-        }
-
         public CommonDto.IdReqDto toIdReqDto() {
             return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
         }

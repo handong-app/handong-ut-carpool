@@ -60,6 +60,6 @@ public class TbgroupTbuserRestController {
     )
     @PostMapping("/count")
     public ResponseEntity<TbgroupTbuserDto.PassengerCountResDto> userCount(@Valid @RequestBody CommonDto.IdReqDto param){
-        return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.getPassengerCount(param));
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.getCurrentPassengerCount(param));
     }
 }
