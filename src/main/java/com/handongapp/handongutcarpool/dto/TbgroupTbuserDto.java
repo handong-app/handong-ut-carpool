@@ -290,4 +290,32 @@ public class TbgroupTbuserDto {
         @Size(max = 100)
         private String message;
     }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailFromGroupUserServDto {
+        @Schema(description = "currentCount", example="1")
+        @NotNull
+        private Integer currentPassengers;
+
+        @Schema(description = "currentLuggage", example="4")
+        @NotNull
+        private Integer currentLuggage;
+    }
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IsUserInGroupServDto {
+        @Schema(description = "isUserInGroup", example="True")
+        @NotNull
+        private Boolean isUserInGroup;
+    }
 }
