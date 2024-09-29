@@ -54,4 +54,23 @@ public class TbuserDto {
         private LocalDateTime penaltyUntil;
     }
 
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailFromUserServDto {
+        @Schema(description = "group leader hakbun", example = "22000000")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String groupLeaderHakbun;
+
+        @Schema(description = "group leader name", example = "김한동")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String groupLeaderName;
+    }
 }
