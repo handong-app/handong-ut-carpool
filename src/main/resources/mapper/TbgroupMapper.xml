@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0/EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.handongapp.handongutcarpool.mapper.TbgroupMapper">
-<!--    <update id="groupAdminLeave" parameterType="hashMap">-->
-<!--        UPDATE tbgroup-->
-<!--        SET deleted = 'Y'-->
-<!--        WHERE id = #{id}-->
-<!--    </update>-->
-    <select id="getMaxLuggage" parameterType="hashMap" resultType="Integer">
-        SELECT max_luggage
-        FROM tbgroup
-        WHERE tbgroup.id = #{id}
-    </select>
+    <update id="groupAdminLeave" parameterType="hashMap">
+        UPDATE tbgroup
+        SET deleted = 'Y'
+        WHERE id = #{id}
+    </update>
 
-    <select id="getIsLock" parameterType="hashMap" resultType="Boolean">
-        SELECT locked
+    <select id="getDetailFromGroup" parameterType="hashMap"  resultType="com.handongapp.handongutcarpool.dto.TbgroupDto$DetailFromGroupServDto">
+        SELECT tbuser_id AS groupLeaderId,
+               detail,
+               from_location AS fromLocation,
+               to_location AS toLocation,
+               max_passengers AS maxPassengers,
+               max_luggage AS maxLuggage,
+               status,
+               locked AS isLocked,
+               departure_at AS departureAt
         FROM tbgroup
-        WHERE tbgroup.id = #{id}
+        WHERE id = #{id}
     </select>
 </mapper>
