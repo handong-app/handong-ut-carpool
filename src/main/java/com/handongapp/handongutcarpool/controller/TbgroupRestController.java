@@ -57,4 +57,15 @@ public class TbgroupRestController {
     public ResponseEntity<CommonDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.updateStatus(param));
     }
+
+    @Operation(summary = "그룹 상세정보",
+            description = "그룹 상세정보 가져오기<br />"
+                    + "@param TbgroupDto.DetailReqDto <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<TbgroupDto.DetailResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때 등 <br />"
+    )
+    @PostMapping("/detail")
+    public ResponseEntity<TbgroupDto.DetailResDto> getDetail(@Valid @RequestBody TbgroupDto.DetailReqDto param){
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.getDetail(param));
+    }
 }
