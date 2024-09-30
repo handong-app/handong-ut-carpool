@@ -9,4 +9,5 @@ public interface TbgroupService {
     CommonDto.IdResDto create(TbgroupDto.CreateReqDto param);
     CommonDto.IdResDto toggleLock(TbgroupDto.LockReqDto param);
     CommonDto.IdResDto updateStatus(TbgroupDto.UpdateStatusReqDto param);
+    TbgroupDto.DetailResDto getDetail(TbgroupDto.DetailReqDto param);
 }
