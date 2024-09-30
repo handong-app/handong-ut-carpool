@@ -12,4 +12,18 @@
         FROM tbgroup_tbuser
         WHERE tbgroup_tbuser.tbgroup_id = #{id} AND tbgroup_tbuser.deleted = 'N'
     </select>
+
+    <select id="getDetailFromGroupUser" parameterType="hashMap"  resultType="com.handongapp.handongutcarpool.dto.TbgroupTbuserDto$DetailFromGroupUserServDto">
+        SELECT SUM(tbgroup_tbuser.passengers) AS currentPassengers, SUM(tbgroup_tbuser.luggage) AS currentLuggage
+        FROM tbgroup_tbuser
+        WHERE tbgroup_tbuser.tbgroup_id = #{id} AND tbgroup_tbuser.deleted = 'N'
+    </select>
+
+    <select id="isUserInGroup" parameterType="hashMap"  resultType="com.handongapp.handongutcarpool.dto.TbgroupTbuserDto$IsUserInGroupServDto">
+        SELECT EXISTS (
+            SELECT 1
+            FROM tbgroup_tbuser
+            WHERE tbgroup_tbuser.tbuser_id = #{id} AND tbgroup_tbuser.deleted = 'N'
+        ) AS isUserInGroup;
+    </select>
 </mapper>

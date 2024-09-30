@@ -37,7 +37,7 @@ public class TbgroupDto {
         @Size(max=100)
         private String toLocation;
 
-        @Schema(description = "detail", example="SUV 차량입니다. 캐리어 가능합니다.")
+        @Schema(description = "getDetail", example="SUV 차량입니다. 캐리어 가능합니다.")
         @NotNull
         @NotEmpty
         @Size(max=200)
@@ -145,6 +145,20 @@ public class TbgroupDto {
         @NotEmpty
         @Size(max = 50)
         private String tbgroupId;
+
+        @Schema(description = "TbuserId", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String tbuserId;
+
+        public CommonDto.IdReqDto toIdReqDtoGroup() {
+            return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
+        }
+
+        public CommonDto.IdReqDto toIdReqDtoUser() {
+            return CommonDto.IdReqDto.builder().id(this.tbuserId).build();
+        }
     }
 
     @Builder
@@ -160,20 +174,17 @@ public class TbgroupDto {
         @Size(max = 50)
         private String groupLeaderHakbun;
 
-
         @Schema(description = "group leader name", example = "UUID")
         @NotNull
         @NotEmpty
         @Size(max = 50)
         private String groupLeaderName;
 
-
-        @Schema(description = "detail", example="SUV 차량입니다. 캐리어 가능합니다.")
+        @Schema(description = "getDetail", example="SUV 차량입니다. 캐리어 가능합니다.")
         @NotNull
         @NotEmpty
         @Size(max=200)
         private String detail;
-
 
         @Schema(description = "fromLocation", example="한동대 택시정류장")
         @NotNull
@@ -187,28 +198,115 @@ public class TbgroupDto {
         @Size(max=100)
         private String toLocation;
 
-
         @Schema(description = "maxCount", example="4")
         @NotNull
-        @NotEmpty
         private Integer maxPassengers;
-
 
         @Schema(description = "currentCount", example="1")
         @NotNull
-        @NotEmpty
         private Integer currentPassengers;
-
 
         @Schema(description = "maxLuggage", example="4")
         @NotNull
-        @NotEmpty
         private Integer maxLuggage;
 
+        @Schema(description = "currentLuggage", example="4")
+        @NotNull
+        private Integer currentLuggage;
+
+        @Schema(description = "status", example = "recruiting")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String status;
+
+        @Schema(description = "isLocked", example="false")
+        @NotNull
+        private Boolean isLocked;
 
         @Schema(description = "departureAt", example="2024-09-01T19:37:30")
         @NotNull
-        @NotEmpty
         private LocalDateTime departureAt;
+
+        @Schema(description = "isUserInGroup", example="true")
+        @NotNull
+        private Boolean isUserInGroup;
+
+        public static DetailResDto of (TbgroupDto.DetailFromGroupServDto detailFromGroup, TbuserDto.DetailFromUserServDto detailFromUser, TbgroupTbuserDto.DetailFromGroupUserServDto  detailFromGroupUser, TbgroupTbuserDto.IsUserInGroupServDto isUserInGroupServDto){
+            return DetailResDto.builder()
+                    .groupLeaderHakbun(detailFromUser.getGroupLeaderHakbun())
+                    .groupLeaderName(detailFromUser.getGroupLeaderName())
+                    .detail(detailFromGroup.getDetail())
+                    .fromLocation(detailFromGroup.getFromLocation())
+                    .toLocation(detailFromGroup.getToLocation())
+                    .maxPassengers(detailFromGroup.getMaxPassengers())
+                    .currentPassengers(detailFromGroupUser.getCurrentPassengers())
+                    .maxLuggage(detailFromGroup.getMaxLuggage())
+                    .currentLuggage(detailFromGroupUser.getCurrentLuggage())
+                    .status(detailFromGroup.getStatus())
+                    .isLocked(detailFromGroup.getIsLocked())
+                    .departureAt(detailFromGroup.getDepartureAt())
+                    .isUserInGroup(isUserInGroupServDto.getIsUserInGroup())
+                    .build();
+        }
+    }
+
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DetailFromGroupServDto {
+        @Schema(description = "group leader id", example = "UUID")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String groupLeaderId;
+
+        @Schema(description = "getDetail", example="SUV 차량입니다. 캐리어 가능합니다.")
+        @NotNull
+        @NotEmpty
+        @Size(max=200)
+        private String detail;
+
+        @Schema(description = "fromLocation", example="한동대 택시정류장")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String fromLocation;
+
+        @Schema(description = "toLocation", example="양덕 유야")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String toLocation;
+
+        @Schema(description = "maxCount", example="4")
+        @NotNull
+        private Integer maxPassengers;
+
+        @Schema(description = "maxLuggage", example="4")
+        @NotNull
+        private Integer maxLuggage;
+
+        @Schema(description = "status", example = "recruiting")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String status;
+
+        @Schema(description = "isLocked", example="false")
+        @NotNull
+        private Boolean isLocked;
+
+        @Schema(description = "departureAt", example="2024-09-01T19:37:30")
+        @NotNull
+        private LocalDateTime departureAt;
+
+        public CommonDto.IdReqDto getGroupLeaderToIdReqDto() {
+            return CommonDto.IdReqDto.builder().id(this.groupLeaderId).build();
+        }
     }
 }
