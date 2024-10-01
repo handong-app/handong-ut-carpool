@@ -1,9 +1,14 @@
 package com.handongapp.handongutcarpool.service.impl;
 
+import com.handongapp.handongutcarpool.domain.RoleType;
+import com.handongapp.handongutcarpool.domain.Tbuser;
+import com.handongapp.handongutcarpool.domain.TbuserRoleType;
 import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbuserDto;
 import com.handongapp.handongutcarpool.exception.NoMatchingDataException;
+import com.handongapp.handongutcarpool.repository.RoleTypeRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
+import com.handongapp.handongutcarpool.repository.TbuserRoleTypeRepository;
 import com.handongapp.handongutcarpool.service.TbuserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +21,13 @@ public class TbuserServiceImpl implements TbuserService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final TbuserRepository tbuserRepository;
+    private final RoleTypeRepository roleTypeRepository;
+    private final TbuserRoleTypeRepository tbuserRoleTypeRepository;
 
-    public TbuserServiceImpl(TbuserRepository tbuserRepository) {
+    public TbuserServiceImpl(TbuserRepository tbuserRepository, RoleTypeRepository roleTypeRepository, TbuserRoleTypeRepository tbuserRoleTypeRepository) {
         this.tbuserRepository = tbuserRepository;
+        this.roleTypeRepository = roleTypeRepository;
+        this.tbuserRoleTypeRepository = tbuserRoleTypeRepository;
     }
 
     @Override
@@ -31,7 +40,14 @@ public class TbuserServiceImpl implements TbuserService {
                     return tbuserRepository.save(existingTbuser).toIdResDto();
                 })
                 // 신규 유저일 때 실행
-                .orElseGet(() -> tbuserRepository.save(param.toEntity()).toIdResDto());
+                .orElseGet(() -> {
+                    Tbuser tbuser = tbuserRepository.save(param.toEntity());
+                    RoleType roleType = roleTypeRepository.findByTypeName("ROLE_USER");
+                    TbuserRoleType tbuserRoleType = TbuserRoleType.of(tbuser, roleType);
+                    tbuserRoleTypeRepository.save(tbuserRoleType);
+                    return tbuser.toIdResDto();
+                }
+                );
     }
 
     @Override
