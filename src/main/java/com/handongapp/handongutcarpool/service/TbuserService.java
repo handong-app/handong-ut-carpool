@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TbuserService {
+    TbuserDto.RefreshAccessTokenResDto refreshAccessToken(String param) throws Exception;
+//    CommonDto.IdResDto signup(TbuserDto.SignupReqDto param);
+
     CommonDto.IdResDto createOrUpdate(TbuserDto.CreateReqDto param);
     CommonDto.IdResDto updatePenalty(TbuserDto.UpdatePenaltyReqDto param);
 }
