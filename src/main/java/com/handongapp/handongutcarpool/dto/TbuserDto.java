@@ -16,6 +16,41 @@ public class TbuserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class RefreshAccessTokenResDto{
+        @Schema(description = "accessToken", example = "")
+        @NotNull
+        @NotEmpty
+        private String accessToken;
+    }
+
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LoginReqDto{
+        @Schema(description = "hakbun", example = "22000001")
+        @NotNull
+        @NotEmpty
+        @Size(max = 50)
+        private String hakbun;
+
+        @Schema(description = "phoneNumber", example="010-0000-0000")
+        @NotNull
+        @NotEmpty
+        @Size(max=100)
+        private String phoneNumber;
+    }
+
+
+    @Builder
+    @Schema
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CreateReqDto{
         @Schema(description = "hakbun", example = "22000001")
         @NotNull

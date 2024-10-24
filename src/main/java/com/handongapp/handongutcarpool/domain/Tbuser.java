@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -20,6 +22,16 @@ public class Tbuser extends AuditingFields{
     @Setter @Column(nullable = false, unique = false) private String name;
     @Setter @Column(nullable = false, unique = true) private String phoneNumber;
     @Setter @Column(nullable = true, unique = false) private LocalDateTime penaltyUntil;
+
+    @OneToMany(mappedBy = "tbuser", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<TbuserRoleType> tbuserRoleType = new ArrayList<>();
+
+    public List<TbuserRoleType> getRoleList(){
+        if(!this.tbuserRoleType.isEmpty()){
+            return tbuserRoleType;
+        }
+        return new ArrayList<>();
+    }
 
     protected Tbuser() {}
     public Tbuser(String hakbun, String name, String phoneNumber,  LocalDateTime penaltyUntil ) {

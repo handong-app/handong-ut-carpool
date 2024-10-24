@@ -29,6 +29,15 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    //implementation 'com.auth0:java-jwt:4.4.0'
+    implementation group: 'com.auth0', name: 'java-jwt', version: '4.4.0'
+
+
     // AOP
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
