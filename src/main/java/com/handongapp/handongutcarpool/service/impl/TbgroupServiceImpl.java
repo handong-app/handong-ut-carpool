@@ -14,7 +14,6 @@ import com.handongapp.handongutcarpool.repository.TbgroupRepository;
 import com.handongapp.handongutcarpool.repository.TbgroupTbuserRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
 import com.handongapp.handongutcarpool.service.TbgroupService;
-import com.handongapp.handongutcarpool.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
