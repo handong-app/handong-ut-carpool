@@ -27,6 +27,12 @@ public class TbuserRestController {
         this.tbuserService = tbuserService;
     }
 
+    @Operation(summary = "사용자 AccessToken refresh",
+            description = "사용자 AccessToken refresh 컨트롤러 <br />"
+                    + "@param HttpServletRequest <br />"
+                    + "@return HttpStatus.OK(200) ResponseEntity\\<TbuserDto.RefreshAccessTokenResDto\\> <br />"
+                    + "@exception 필수 파라미터 누락하였을 때 등 <br />"
+    )
     @PostMapping("/refresh")
     public ResponseEntity<TbuserDto.RefreshAccessTokenResDto> refreshAccessToken(HttpServletRequest request) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(tbuserService.refreshAccessToken(request.getHeader("refreshToken")));
@@ -50,6 +56,7 @@ public class TbuserRestController {
                     + "@exception 필수 파라미터 누락하였을 때, 사용자가 없을 때 등 <br />"
     )
     @PostMapping("/update/penalty")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CommonDto.IdResDto> updatePenalty(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.updatePenalty(param));
     }

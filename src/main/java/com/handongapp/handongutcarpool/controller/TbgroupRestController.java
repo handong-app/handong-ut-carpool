@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/create")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<CommonDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupService.create(param));
     }
@@ -43,6 +45,7 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/toggle/lock")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<CommonDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.toggleLock(param));
     }
@@ -54,6 +57,7 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/update/status")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<CommonDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.updateStatus(param));
     }
@@ -65,6 +69,7 @@ public class TbgroupRestController {
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
     @PostMapping("/detail")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<TbgroupDto.DetailResDto> getDetail(@Valid @RequestBody TbgroupDto.DetailReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.getDetail(param));
     }
