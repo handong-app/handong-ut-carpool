@@ -5,9 +5,11 @@ import com.handongapp.handongutcarpool.dto.TbuserDto;
 import com.handongapp.handongutcarpool.service.TbuserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,11 @@ public class TbuserRestController {
     private final TbuserService tbuserService;
     public TbuserRestController(TbuserService tbuserService) {
         this.tbuserService = tbuserService;
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<TbuserDto.RefreshAccessTokenResDto> refreshAccessToken(HttpServletRequest request) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(tbuserService.refreshAccessToken(request.getHeader("refreshToken")));
     }
 
     @Operation(summary = "사용자 생성",
