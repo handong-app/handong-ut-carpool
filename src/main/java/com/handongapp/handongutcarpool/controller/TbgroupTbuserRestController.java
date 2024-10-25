@@ -35,8 +35,8 @@ public class TbgroupTbuserRestController {
                     + "@return HttpStatus.CREATED(201) ResponseEntity\\<TbgroupTbuserDto.EnterGroupResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/enter")
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/enter")
     public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> enter(@Valid @RequestBody TbgroupTbuserDto.EnterGroupReqDto param){
         if (param.getLuggage()<0) throw new ValidationException("Luggage must be a non-negative integer");
         if (param.getPassengers()<1) throw new ValidationException("Passengers must be lager then 1");
@@ -49,8 +49,8 @@ public class TbgroupTbuserRestController {
                     + "@return HttpStatus.CREATED(201) ResponseEntity\\<TbgroupTbuserDto.LeaveGroupResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/leave")
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/leave")
     public ResponseEntity<TbgroupTbuserDto.LeaveGroupResDto> leave(@Valid @RequestBody TbgroupTbuserDto.LeaveGroupReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.leave(param));
     }
@@ -61,8 +61,8 @@ public class TbgroupTbuserRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<TbgroupTbuserDto.UserCountResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/count")
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/count")
     public ResponseEntity<TbgroupTbuserDto.PassengerCountResDto> userCount(@Valid @RequestBody CommonDto.IdReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.getCurrentPassengerCount(param));
     }

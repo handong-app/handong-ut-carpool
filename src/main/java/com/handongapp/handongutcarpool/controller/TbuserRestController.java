@@ -33,6 +33,7 @@ public class TbuserRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<TbuserDto.RefreshAccessTokenResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("permitAll()")
     @PostMapping("/refresh")
     public ResponseEntity<TbuserDto.RefreshAccessTokenResDto> refreshAccessToken(HttpServletRequest request) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(tbuserService.refreshAccessToken(request.getHeader("refreshToken")));
@@ -44,6 +45,7 @@ public class TbuserRestController {
                     + "@return HttpStatus.CREATED(201) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("permitAll()")
     @PostMapping("/create")
     public ResponseEntity<CommonDto.IdResDto> create(@Valid @RequestBody TbuserDto.CreateReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.createOrUpdate(param));
@@ -55,8 +57,8 @@ public class TbuserRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때, 사용자가 없을 때 등 <br />"
     )
-    @PostMapping("/update/penalty")
     @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/update/penalty")
     public ResponseEntity<CommonDto.IdResDto> updatePenalty(@Valid @RequestBody TbuserDto.UpdatePenaltyReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbuserService.updatePenalty(param));
     }

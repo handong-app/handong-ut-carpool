@@ -32,8 +32,8 @@ public class TbgroupRestController {
                     + "@return HttpStatus.CREATED(201) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/create")
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/create")
     public ResponseEntity<CommonDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
         return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupService.create(param));
     }
@@ -44,8 +44,8 @@ public class TbgroupRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/toggle/lock")
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/toggle/lock")
     public ResponseEntity<CommonDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.toggleLock(param));
     }
@@ -56,8 +56,8 @@ public class TbgroupRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/update/status")
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/update/status")
     public ResponseEntity<CommonDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.updateStatus(param));
     }
@@ -68,8 +68,8 @@ public class TbgroupRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<TbgroupDto.DetailResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
-    @PostMapping("/detail")
     @PreAuthorize("hasRole('USER')")
+    @PostMapping("/detail")
     public ResponseEntity<TbgroupDto.DetailResDto> getDetail(@Valid @RequestBody TbgroupDto.DetailReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.getDetail(param));
     }
