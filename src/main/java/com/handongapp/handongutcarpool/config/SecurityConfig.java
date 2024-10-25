@@ -81,7 +81,14 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/login", "/api/tbuser/create", "/api/tbuser/refresh").permitAll()
+						.requestMatchers(
+								"/v3/api-docs/**",
+								"/swagger-ui/**",
+								"/swagger-ui.html",
+								"/api/login",
+								"/api/tbuser/create",
+								"/api/tbuser/refresh"
+						).permitAll()
 						.anyRequest().authenticated()
 				)
 				.sessionManagement(session -> session
