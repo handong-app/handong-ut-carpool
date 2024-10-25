@@ -14,6 +14,7 @@ import com.handongapp.handongutcarpool.repository.TbgroupRepository;
 import com.handongapp.handongutcarpool.repository.TbgroupTbuserRepository;
 import com.handongapp.handongutcarpool.repository.TbuserRepository;
 import com.handongapp.handongutcarpool.service.TbgroupService;
+import com.handongapp.handongutcarpool.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,11 +42,11 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public CommonDto.IdResDto create(TbgroupDto.CreateReqDto param){
-        return tbuserRepository.findById(param.getTbuserId())
+    public CommonDto.IdResDto create(TbgroupDto.CreateReqDto param, String currentUserId){
+        return tbuserRepository.findById(currentUserId)
                 .map(existingTbuser -> {
-                    CommonDto.IdResDto res = tbgroupRepository.save(param.toEntity()).toIdResDto();
-                    enterGroupAfterCreate(TbgroupDto.EnterGroupAdminReqDto.builder().tbgroupId(res.getId()).tbuserId(param.getTbuserId()).build());
+                    CommonDto.IdResDto res = tbgroupRepository.save(param.toEntity(currentUserId)).toIdResDto();
+                    enterGroupAfterCreate(TbgroupDto.EnterGroupAdminReqDto.builder().tbgroupId(res.getId()).tbuserId(currentUserId).build());
                     return res;
                 })
                 .orElseThrow(() -> new NoMatchingDataException("User Not Exists"));
@@ -60,10 +61,10 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public CommonDto.IdResDto toggleLock(TbgroupDto.LockReqDto param){
+    public CommonDto.IdResDto toggleLock(TbgroupDto.LockReqDto param, String currentUserId){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
-                    if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
+                    if(existingTbgroup.getTbuserId().equals(currentUserId)){
                         existingTbgroup.setLocked(!existingTbgroup.getLocked());
                         return tbgroupRepository.save(existingTbgroup).toIdResDto();
                     }
@@ -73,10 +74,10 @@ public class TbgroupServiceImpl implements TbgroupService {
     }
 
     @Override
-    public CommonDto.IdResDto updateStatus(TbgroupDto.UpdateStatusReqDto param){
+    public CommonDto.IdResDto updateStatus(TbgroupDto.UpdateStatusReqDto param, String currentUserId){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
-                    if(existingTbgroup.getTbuserId().equals(param.getTbuserId())){
+                    if(existingTbgroup.getTbuserId().equals(currentUserId)){
                         existingTbgroup.setStatus(param.getStatus());
                         return tbgroupRepository.save(existingTbgroup).toIdResDto();
                     }
@@ -87,7 +88,7 @@ public class TbgroupServiceImpl implements TbgroupService {
 
     @Override
     @Transactional(readOnly = true)
-    public TbgroupDto.DetailResDto getDetail(TbgroupDto.DetailReqDto param){
+    public TbgroupDto.DetailResDto getDetail(TbgroupDto.DetailReqDto param, String currentUserId){
         TbgroupDto.DetailFromGroupServDto detailFromGroup = tbgroupMapper.getDetailFromGroup(param.toIdReqDtoGroup());
         if (detailFromGroup == null) throw new NoMatchingDataException("Group not found");
 
@@ -97,7 +98,7 @@ public class TbgroupServiceImpl implements TbgroupService {
         TbgroupTbuserDto.DetailFromGroupUserServDto detailFromGroupUser = tbgroupTbuserMapper.getDetailFromGroupUser(param.toIdReqDtoGroup());
         if (detailFromGroupUser == null) throw new NoMatchingDataException("Passenger not found");
 
-        TbgroupTbuserDto.IsUserInGroupServDto isUserInGroupServDto = tbgroupTbuserMapper.isUserInGroup(param.toIdReqDtoUser());
+        TbgroupTbuserDto.IsUserInGroupServDto isUserInGroupServDto = tbgroupTbuserMapper.isUserInGroup(param.toIdReqDtoUser(currentUserId));
 
         return TbgroupDto.DetailResDto.of(detailFromGroup, detailFromUser, detailFromGroupUser, isUserInGroupServDto);
     }
