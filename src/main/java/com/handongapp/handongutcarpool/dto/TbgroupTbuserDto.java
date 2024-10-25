@@ -24,12 +24,6 @@ public class TbgroupTbuserDto {
         @Size(max = 50)
         private String tbgroupId;
 
-        @Schema(description = "tbuser_id", example = "UUID")
-        @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbuserId;
-
         @Schema(description = "passengers", example = "1")
         @NotNull
         @Min(value = 0, message = "passengers must be a non-negative integer")
@@ -40,10 +34,10 @@ public class TbgroupTbuserDto {
         @Min(value = 0, message = "Luggage must be a non-negative integer")
         private Integer luggage;
 
-        public TbgroupTbuserDto.EnterGroupServDto toServDto(Integer groupMaxPassengers, Integer groupMaxLuggage, Boolean groupIsLock) {
+        public TbgroupTbuserDto.EnterGroupServDto toServDto(String currentUserId, Integer groupMaxPassengers, Integer groupMaxLuggage, Boolean groupIsLock) {
             return EnterGroupServDto.builder()
                     .tbgroupId(this.tbgroupId)
-                    .tbuserId(this.tbuserId)
+                    .tbuserId(currentUserId)
                     .passengers(this.passengers)
                     .luggage(this.luggage)
                     .groupMaxPassengers(groupMaxPassengers)
@@ -256,13 +250,6 @@ public class TbgroupTbuserDto {
         @NotEmpty
         @Size(max = 50)
         private String tbgroupId;
-
-        @Schema(description = "tbuser_id", example = "UUID")
-        @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbuserId;
-
     }
 
     @Builder
