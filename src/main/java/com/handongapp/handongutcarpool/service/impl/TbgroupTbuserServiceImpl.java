@@ -36,21 +36,21 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
     }
 
     @Override
-    public TbgroupTbuserDto.EnterGroupResDto enter(TbgroupTbuserDto.EnterGroupReqDto param){
+    public TbgroupTbuserDto.EnterGroupResDto enter(TbgroupTbuserDto.EnterGroupReqDto param, String currentUserId){
         return tbgroupRepository.findById(param.getTbgroupId())
                 .map(existingTbgroup -> {
                     if(existingTbgroup.getDeleted().equals("Y")) throw new NoMatchingDataException("Group deleted");
                     return tbgroupTbuserRepository
-                            .save(validatedAndReturn(param.toServDto(existingTbgroup.getMaxPassengers(), existingTbgroup.getMaxLuggage(), existingTbgroup.getLocked())))
+                            .save(validatedAndReturn(param.toServDto(currentUserId, existingTbgroup.getMaxPassengers(), existingTbgroup.getMaxLuggage(), existingTbgroup.getLocked())))
                             .toEnterGroupResDto();
                 })
                 .orElseThrow(() -> new NoMatchingDataException("Group not found"));
     }
 
     @Override
-    public TbgroupTbuserDto.LeaveGroupResDto leave(TbgroupTbuserDto.LeaveGroupReqDto param){
+    public TbgroupTbuserDto.LeaveGroupResDto leave(TbgroupTbuserDto.LeaveGroupReqDto param, String currentUserId){
         tbgroupTbuserRepository.save(
-                tbgroupTbuserRepository.findByTbgroupIdAndTbuserId(param.getTbgroupId(), param.getTbuserId())
+                tbgroupTbuserRepository.findByTbgroupIdAndTbuserId(param.getTbgroupId(), currentUserId)
                         .map(tbuserTbgroup -> {
                             if(tbuserTbgroup.getDeleted().equals("Y")) throw new UserAlreadyLeavedException("User is already leaved");
                             tbuserTbgroup.setDeleted("Y");
@@ -60,7 +60,7 @@ public class TbgroupTbuserServiceImpl implements TbgroupTbuserService {
                             return tbuserTbgroup;})
                         .orElseThrow(() -> new NoMatchingDataException("Group or User not found"))
         );
-        return TbgroupTbuserDto.LeaveGroupResDto.builder().tbgroupId(param.getTbgroupId()).tbuserId(param.getTbuserId()).message("success").build();
+        return TbgroupTbuserDto.LeaveGroupResDto.builder().tbgroupId(param.getTbgroupId()).tbuserId(currentUserId).message("success").build();
     }
 
     private TbgroupTbuser validatedAndReturn(TbgroupTbuserDto.EnterGroupServDto param){

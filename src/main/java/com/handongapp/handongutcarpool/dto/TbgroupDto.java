@@ -19,12 +19,6 @@ public class TbgroupDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CreateReqDto{
-        @Schema(description = "group leader", example = "UUID")
-        @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbuserId;
-
         @Schema(description = "fromLocation", example="한동대 택시정류장")
         @NotNull
         @NotEmpty
@@ -58,7 +52,7 @@ public class TbgroupDto {
         @NotEmpty
         private LocalDateTime departureAt;
 
-        public Tbgroup toEntity() {
+        public Tbgroup toEntity(String tbuserId) {
             return Tbgroup.of(tbuserId, fromLocation, toLocation, detail, maxPassengers, maxLuggage, departureAt);
         }
     }
@@ -93,18 +87,12 @@ public class TbgroupDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class LockReqDto{
+    public static class LockReqDto {
         @Schema(description = "TbgorupId", example = "UUID")
         @NotNull
         @NotEmpty
         @Size(max = 50)
         private String tbgroupId;
-
-        @Schema(description = "TbuserId", example = "UUID")
-        @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbuserId;
     }
 
     @Builder
@@ -119,12 +107,6 @@ public class TbgroupDto {
         @NotEmpty
         @Size(max = 50)
         private String tbgroupId;
-
-        @Schema(description = "TbuserId", example = "UUID")
-        @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbuserId;
 
         @Schema(description = "status", example = "recruiting")
         @NotNull
@@ -145,19 +127,12 @@ public class TbgroupDto {
         @NotEmpty
         @Size(max = 50)
         private String tbgroupId;
-
-        @Schema(description = "TbuserId", example = "UUID")
-        @NotNull
-        @NotEmpty
-        @Size(max = 50)
-        private String tbuserId;
-
         public CommonDto.IdReqDto toIdReqDtoGroup() {
             return CommonDto.IdReqDto.builder().id(this.tbgroupId).build();
         }
 
-        public CommonDto.IdReqDto toIdReqDtoUser() {
-            return CommonDto.IdReqDto.builder().id(this.tbuserId).build();
+        public CommonDto.IdReqDto toIdReqDtoUser(String currentUserId) {
+            return CommonDto.IdReqDto.builder().id(currentUserId).build();
         }
     }
 

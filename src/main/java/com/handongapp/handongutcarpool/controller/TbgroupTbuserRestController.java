@@ -3,6 +3,7 @@ package com.handongapp.handongutcarpool.controller;
 
 import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupTbuserDto;
+import com.handongapp.handongutcarpool.security.PrincipalDetails;
 import com.handongapp.handongutcarpool.service.TbgroupTbuserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +11,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,11 +37,13 @@ public class TbgroupTbuserRestController {
                     + "@return HttpStatus.CREATED(201) ResponseEntity\\<TbgroupTbuserDto.EnterGroupResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/enter")
-    public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> enter(@Valid @RequestBody TbgroupTbuserDto.EnterGroupReqDto param){
+    public ResponseEntity<TbgroupTbuserDto.EnterGroupResDto> enter(@Valid @RequestBody TbgroupTbuserDto.EnterGroupReqDto param,
+                                                                   @AuthenticationPrincipal PrincipalDetails principalDetails){
         if (param.getLuggage()<0) throw new ValidationException("Luggage must be a non-negative integer");
         if (param.getPassengers()<1) throw new ValidationException("Passengers must be lager then 1");
-        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.enter(param));
+        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.enter(param, principalDetails.getTbuser().getId()));
     }
 
     @Operation(summary = "그룹 유저 퇴장",
@@ -47,9 +52,11 @@ public class TbgroupTbuserRestController {
                     + "@return HttpStatus.CREATED(201) ResponseEntity\\<TbgroupTbuserDto.LeaveGroupResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/leave")
-    public ResponseEntity<TbgroupTbuserDto.LeaveGroupResDto> leave(@Valid @RequestBody TbgroupTbuserDto.LeaveGroupReqDto param){
-        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.leave(param));
+    public ResponseEntity<TbgroupTbuserDto.LeaveGroupResDto> leave(@Valid @RequestBody TbgroupTbuserDto.LeaveGroupReqDto param,
+                                                                   @AuthenticationPrincipal PrincipalDetails principalDetails){
+        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupTbuserService.leave(param, principalDetails.getTbuser().getId()));
     }
 
     @Operation(summary = "그룹 유저 카운트",
@@ -58,6 +65,7 @@ public class TbgroupTbuserRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<TbgroupTbuserDto.UserCountResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/count")
     public ResponseEntity<TbgroupTbuserDto.PassengerCountResDto> userCount(@Valid @RequestBody CommonDto.IdReqDto param){
         return ResponseEntity.status(HttpStatus.OK).body(tbgroupTbuserService.getCurrentPassengerCount(param));

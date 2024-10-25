@@ -15,6 +15,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(CommonDto.IdResDto.builder().id(ex.getMessage()).build());
     }
+    @ExceptionHandler(NoAuthenticationException.class)
+    public ResponseEntity<CommonDto.IdResDto> handleNoAuthenticationException(NoAuthenticationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(CommonDto.IdResDto.builder().id(ex.getMessage()).build());
+    }
 
     @ExceptionHandler(NoMatchingDataException.class)
     public ResponseEntity<CommonDto.IdResDto> handleNoMatchingDataExceptionException(NoMatchingDataException ex) {

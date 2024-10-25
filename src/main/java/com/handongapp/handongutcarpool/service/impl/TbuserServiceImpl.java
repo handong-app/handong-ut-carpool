@@ -12,7 +12,6 @@ import com.handongapp.handongutcarpool.repository.TbuserRoleTypeRepository;
 import com.handongapp.handongutcarpool.service.AuthService;
 import com.handongapp.handongutcarpool.service.TbuserService;
 import com.handongapp.handongutcarpool.util.ExternalProperties;
-import org.antlr.v4.runtime.TokenFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

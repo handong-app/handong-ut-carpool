@@ -2,12 +2,15 @@ package com.handongapp.handongutcarpool.controller;
 
 import com.handongapp.handongutcarpool.dto.CommonDto;
 import com.handongapp.handongutcarpool.dto.TbgroupDto;
+import com.handongapp.handongutcarpool.security.PrincipalDetails;
 import com.handongapp.handongutcarpool.service.TbgroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +34,11 @@ public class TbgroupRestController {
                     + "@return HttpStatus.CREATED(201) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/create")
-    public ResponseEntity<CommonDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param){
-        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupService.create(param));
+    public ResponseEntity<CommonDto.IdResDto> create(@Valid @RequestBody TbgroupDto.CreateReqDto param,
+                                                     @AuthenticationPrincipal PrincipalDetails principalDetails){
+        return ResponseEntity.status(HttpStatus.CREATED).body(tbgroupService.create(param, principalDetails.getTbuser().getId()));
     }
 
     @Operation(summary = "그룹 잠그기 토글",
@@ -42,9 +47,11 @@ public class TbgroupRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/toggle/lock")
-    public ResponseEntity<CommonDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param){
-        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.toggleLock(param));
+    public ResponseEntity<CommonDto.IdResDto> lock(@Valid @RequestBody TbgroupDto.LockReqDto param,
+                                                   @AuthenticationPrincipal PrincipalDetails principalDetails){
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.toggleLock(param, principalDetails.getTbuser().getId()));
     }
 
     @Operation(summary = "그룹 상태 변경",
@@ -53,9 +60,11 @@ public class TbgroupRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<BasicDto.IdResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/update/status")
-    public ResponseEntity<CommonDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param){
-        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.updateStatus(param));
+    public ResponseEntity<CommonDto.IdResDto> updateStatus(@Valid @RequestBody TbgroupDto.UpdateStatusReqDto param,
+                                                           @AuthenticationPrincipal PrincipalDetails principalDetails){
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.updateStatus(param, principalDetails.getTbuser().getId()));
     }
 
     @Operation(summary = "그룹 상세정보",
@@ -64,8 +73,10 @@ public class TbgroupRestController {
                     + "@return HttpStatus.OK(200) ResponseEntity\\<TbgroupDto.DetailResDto\\> <br />"
                     + "@exception 필수 파라미터 누락하였을 때 등 <br />"
     )
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/detail")
-    public ResponseEntity<TbgroupDto.DetailResDto> getDetail(@Valid @RequestBody TbgroupDto.DetailReqDto param){
-        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.getDetail(param));
+    public ResponseEntity<TbgroupDto.DetailResDto> getDetail(@Valid @RequestBody TbgroupDto.DetailReqDto param,
+                                                             @AuthenticationPrincipal PrincipalDetails principalDetails){
+        return ResponseEntity.status(HttpStatus.OK).body(tbgroupService.getDetail(param, principalDetails.getTbuser().getId()));
     }
 }
